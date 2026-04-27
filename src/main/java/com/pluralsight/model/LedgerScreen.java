@@ -63,6 +63,7 @@ public class LedgerScreen {
                 case "h" :
                     homeScreen();
                     shouldContinue = false;
+                    break;
                 default :
                     break;
             }

@@ -10,16 +10,19 @@ public class main {
         //hs.MakePayment();
 
         //soon they will be merged together.
-        LedgerScreen ls = new LedgerScreen();
-        System.out.println("displaying all");
-        ls.displayAll();
+//        LedgerScreen ls = new LedgerScreen();
+//        System.out.println("displaying all");
+//        ls.displayAll();
+//
+//        System.out.println("displaying payments");
+//        ls.payment();
+//
+//        System.out.println("displaying deposits");
+//
+//        ls.displayDeposit();
 
-        System.out.println("displaying payments");
-        ls.payment();
-
-        System.out.println("displaying deposits");
-
-        ls.displayDeposit();
+        Reports r = new Reports();
+        r.prevMonth();
 
     }
 }
