@@ -10,43 +10,46 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static com.pluralsight.model.LedgerScreen.LedgerScreen;
+
 import static com.pluralsight.model.HomeScreen.*;
 
 public class Reports {
 
-    public void ReportsScreen()
+    public static void ReportsScreen()
     {
         boolean shouldContinue = true;
         do {
+            System.out.println();
             System.out.println(
-                    "Welcome to the Ledger-Screen!! \n" +
+                    "Welcome to the Report-Screen!! \n" +
                             "Type (1) to display Month to date Report: \n" +
                             "Type (2) to display Previous month: \n" +
                             "Type (3) to display Year to date: \n" +
                             "Type (4) to display previous year \n" +
                             "Type (5) to Search by vendor\n" +
                             "Type (0) to go back to the ledger page");
-
+            System.out.println();
             String input = console.promptForString("Please Enter one of the above options: ");
 
             switch(input){
                 case "1" :
-                    System.out.println("monnth to date");;
+                    monthToDate();
                     break;
                 case "2" :
-                    System.out.println("prev month");;
+                    prevMonth();
                     break;
                 case "3" :
-                    System.out.println("year to date");
+                    yearTodate();
                     break;
                 case "4" :
-                    System.out.println("prev year");
+                    prevYear();
                     break;
                 case "5" :
-                    System.out.println("serach by vendor");
+                    searchByVendor();
                     break;
                 case "0" :
-                    System.out.println("go back to ledger page");
+                    LedgerScreen();
                     shouldContinue = false;
                     break;
                 default :
@@ -56,7 +59,6 @@ public class Reports {
 
         while(shouldContinue);
     }
-
 
 
     /**
@@ -118,27 +120,6 @@ public class Reports {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     //prev month
 
@@ -202,4 +183,151 @@ public class Reports {
         }
     }
 
-}
+
+    public static void yearTodate()
+    {
+        //This will give the current date of my local area
+        LocalDate date = LocalDate.now();
+
+        DateTimeFormatter date1;
+        date1 = DateTimeFormatter.ofPattern("yyyy");
+        String formattedTime = date.format(date1);
+
+        String year = formattedTime;
+
+        try{
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+
+            //this will be skipping the header in the file
+            br.readLine();
+
+            String line;
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            while((line = br.readLine()) != null){
+
+                //split by category
+                String[] splittingLine = line.split("\\|");
+
+                //split by date
+                String[] splitDate = splittingLine[0].split("-");
+
+                String yearsInFile = splitDate[0];
+
+                if(yearsInFile.equalsIgnoreCase(year)){
+                    lines.add(line);
+                }
+
+            }
+
+            Collections.reverse(lines);
+
+            for(String L : lines){
+                System.out.println(L.toString());
+            }
+        }
+        catch (IOException e){
+            e.getMessage();
+        }
+    }
+
+
+    public static void prevYear()
+    {
+        //This will give the current date of my local area
+        LocalDate date = LocalDate.now();
+
+        DateTimeFormatter date1;
+        date1 = DateTimeFormatter.ofPattern("yyyy-MM");
+        String formattedTime = date.format(date1);
+
+        String[] splYearmonth = formattedTime.split("-");
+
+        int yearNow = Integer.parseInt(splYearmonth[0]);
+
+
+        //find a way to get the month and year by themselves
+
+
+        try{
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+
+            //this will be skipping the header in the file
+            br.readLine();
+
+            String line;
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            while((line = br.readLine()) != null){
+
+                //split by category
+                String[] splittingLine = line.split("\\|");
+
+                //split by date
+                String[] splitDate = splittingLine[0].split("-");
+
+
+                int year = Integer.parseInt(splitDate[0]);
+
+                int prevYear = yearNow - 2;
+                if((year > prevYear) && (year < yearNow)){
+                    lines.add(line);
+                }
+
+            }
+
+            Collections.reverse(lines);
+
+            for(String L : lines){
+                System.out.println(L.toString());
+            }
+        }
+        catch (IOException e){
+            e.getMessage();
+        }
+    }
+
+
+
+
+    //search by vendor
+
+    public static void searchByVendor()
+    {
+        String nameOfVendor = console.promptForString("Please enter the name of the vendor: ");
+
+
+        try{
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+
+            //this will be skipping the header in the file
+            br.readLine();
+
+            String line;
+
+            while((line = br.readLine()) != null){
+                String[] spl = line.split("\\|");
+
+                String vendor = spl[3];
+
+                if(vendor.equalsIgnoreCase(nameOfVendor)){
+                    System.out.println(line.toString());
+                }
+
+
+            }
+
+        }
+        catch (IOException e){
+            e.getMessage();
+        }
+
+
+
+
+}}

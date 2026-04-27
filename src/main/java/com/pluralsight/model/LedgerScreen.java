@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import static com.pluralsight.model.HomeScreen.homeScreen;
 import static com.pluralsight.model.HomeScreen.transactionFile;
-
+import static com.pluralsight.model.Reports.ReportsScreen;
 
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class LedgerScreen {
 
-    Console console = new Console();
+    static Console console = new Console();
 
     /**
      * we gotta do everything from the most recent to the old
@@ -28,10 +28,11 @@ public class LedgerScreen {
 
     // you will be checking the time of each entry and then showing the most recent ones first
 
-    public void LedgerScreen()
+    public static void LedgerScreen()
     {
         boolean shouldContinue = true;
         do {
+            System.out.println();
             System.out.println(
                     "Welcome to the Ledger-Screen!! \n" +
                             "Type (A) to display all entries: \n" +
@@ -39,6 +40,7 @@ public class LedgerScreen {
                             "Type (P) to see payment entries: \n" +
                             "Type (R) to go to the report page \n" +
                             "Type (H) to return back to Home Page");
+            System.out.println();
 
             String input = console.promptForString("Please Enter one of the above options: ");
 
@@ -57,7 +59,7 @@ public class LedgerScreen {
                     break;
                 case "R" :
                 case "r" :
-                    System.out.println("go to the report page");
+                    ReportsScreen();
                     break;
                 case "H" :
                 case "h" :
@@ -65,6 +67,7 @@ public class LedgerScreen {
                     shouldContinue = false;
                     break;
                 default :
+                    shouldContinue = false;
                     break;
             }
         }

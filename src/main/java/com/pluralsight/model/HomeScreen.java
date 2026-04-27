@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Locale;
 
+import static com.pluralsight.model.LedgerScreen.LedgerScreen;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -78,12 +80,14 @@ public class HomeScreen {
 
         boolean shouldContinue = true;
         do {
+            System.out.println();
             System.out.println(
                     "Welcome to Accounting-Ledger-Application!! \n" +
                             "Type (D) to Add Deposit\n" +
                             "Type (P) to Make Payment\n" +
                             "Type (L) to go to Ledger Screen\n" +
                             "Type (X) to exit");
+            System.out.println();
 
             String input = console.promptForString("Please Enter one of the above options: ");
 
@@ -98,11 +102,11 @@ public class HomeScreen {
                     break;
                 case "L" :
                 case "l" :
-                    System.out.println("call the ledger method");
+                    LedgerScreen();
                     break;
                 case "X" :
                 case "x" :
-                    System.out.println("exit the application");
+                    System.out.println("You have exited the application");
                     shouldContinue = false;
                     break;
                 default :
