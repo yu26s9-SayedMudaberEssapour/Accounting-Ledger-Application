@@ -1,8 +1,8 @@
 package com.pluralsight.ui;
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
-import static com.pluralsight.ui.HomeScreen.readFileWithoutHeader;
 import static com.pluralsight.ui.HomeScreen.transactionFile;
 import static com.pluralsight.ui.Reports.ReportsScreen;
 import java.util.ArrayList;
@@ -60,7 +60,9 @@ public class LedgerScreen {
     {
         //read transaction.csv and only display the values
         try{
-            BufferedReader br = readFileWithoutHeader(transactionFile);
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+            br.readLine();
 
             String line;
 
@@ -89,7 +91,9 @@ public class LedgerScreen {
         //check if the amount is negative then print it
 
         try{
-            BufferedReader br = readFileWithoutHeader(transactionFile);
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+            br.readLine();
 
             String line;
 
@@ -121,7 +125,9 @@ public class LedgerScreen {
     {
 
         try{
-            BufferedReader br = readFileWithoutHeader(transactionFile);
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+            br.readLine();
             String line;
             ArrayList<String> lines = new ArrayList<String>();
 

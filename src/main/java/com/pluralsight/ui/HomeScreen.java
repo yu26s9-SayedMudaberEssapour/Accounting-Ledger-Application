@@ -12,19 +12,6 @@ import java.time.format.DateTimeFormatter;
 
 public class HomeScreen{
 
-    public static void main(String args[]){
-        homeScreen();
-    }
-
-
-    private String data;
-    private String time; //for this import time
-    private String description;
-    private String vendor;
-    private double amount;
-
-    //static Console console = new Console();
-
     public static final String transactionFile = "src/main/java/com/pluralsight/data/transaction.csv";
 
 
@@ -48,7 +35,7 @@ public class HomeScreen{
 
                 switch(input.toUpperCase()){
                     case "D" :
-                        deposit();
+                        MakeDeposit();
                         break;
                     case "P" :
                         MakePayment();
@@ -72,7 +59,7 @@ public class HomeScreen{
 
 
     //take care of it so that it takes care of times when an invalid option is entered.
-    public static void deposit()
+    public static void MakeDeposit()
     {
         //get users deposit information and save it to .csv
         //things to change here (the date) (the time)
@@ -149,23 +136,5 @@ public class HomeScreen{
     }
 
 
-    public static BufferedReader readFileWithoutHeader(String file) throws IOException {
 
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine();
-
-        return br;
-    }
-
-    @Override
-    public String toString() {
-        return "HomeScreen{" +
-                "data='" + data + '\'' +
-                ", time='" + time + '\'' +
-                ", description='" + description + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", amount=" + amount +
-                '}';
-    }
 }
