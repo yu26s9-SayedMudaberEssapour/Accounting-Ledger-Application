@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.pluralsight.model.HomeScreen.*;
+import static com.pluralsight.model.HomeScreen.transactionFile;
 
 public class Reports {
 
@@ -24,6 +25,7 @@ public class Reports {
                             "Type (3) to display Year to date: \n" +
                             "Type (4) to display previous year \n" +
                             "Type (5) to Search by vendor\n" +
+                            "Type (6) to do a custom Search\n" +
                             "Type (0) to go back to the ledger page");
             System.out.println();
             String input = console.promptForString("Please Enter one of the above options: ");
@@ -43,6 +45,9 @@ public class Reports {
                     break;
                 case "5" :
                     searchByVendor();
+                    break;
+                case "6" :
+                    customSearch();
                     break;
                 case "0" :
                     return;
@@ -75,11 +80,7 @@ public class Reports {
         //then get all of the other ones in the same month
 
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
+            BufferedReader br = readFileWithoutHeader(transactionFile);
 
             String line;
 
@@ -136,14 +137,8 @@ public class Reports {
 
 
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
-
+            BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;
-
             ArrayList<String> lines = new ArrayList<>();
 
             while((line = br.readLine()) != null){
@@ -189,11 +184,7 @@ public class Reports {
         String year = formattedTime;
 
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
+            BufferedReader br = readFileWithoutHeader(transactionFile);
 
             String line;
 
@@ -212,7 +203,6 @@ public class Reports {
                 if(yearsInFile.equalsIgnoreCase(year)){
                     lines.add(line);
                 }
-
             }
 
             Collections.reverse(lines);
@@ -240,16 +230,9 @@ public class Reports {
 
         int yearNow = Integer.parseInt(splYearmonth[0]);
 
-
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
-
+            BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;
-
             ArrayList<String> lines = new ArrayList<>();
 
             while((line = br.readLine()) != null){
@@ -287,16 +270,9 @@ public class Reports {
     {
         String nameOfVendor = console.promptForString("Please enter the name of the vendor: ");
 
-
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
-
+            BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;
-
             while((line = br.readLine()) != null){
                 String[] spl = line.split("\\|");
 
@@ -305,8 +281,6 @@ public class Reports {
                 if(vendor.equalsIgnoreCase(nameOfVendor)){
                     System.out.println(line.toString());
                 }
-
-
             }
 
         }
@@ -327,17 +301,14 @@ public static void customSearch()
         try{
             String StartDate = console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
             String EndDate = console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
-
             LocalDate sDate = LocalDate.parse(StartDate);
             LocalDate eDate = LocalDate.parse(EndDate);
+
             String Description = console.promptForString("Please enter a description ");
             String vendor = console.promptForString("Vendor: ");
             double amount = console.promptForDouble("Amount: ");
 
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            br.readLine();
+            BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;
             while((line = br.readLine()) != null) {
 
@@ -350,6 +321,7 @@ public static void customSearch()
 
                 LocalDate dates = LocalDate.parse(date);
 
+
                 if ((dates.isAfter(sDate) || date.equals(sDate)) && (dates.isBefore(eDate) || date.equals(eDate))) {
                     System.out.println(line);
                 } else if (Description.equalsIgnoreCase(desc)) {
@@ -360,6 +332,7 @@ public static void customSearch()
                     System.out.println(line);
                 }
 
+
             }}
         catch (Exception e){
             System.out.println("Sorry invalid value please try again: ");
@@ -368,6 +341,17 @@ public static void customSearch()
         }
 
 
+    }
+
+    public static BufferedReader readFileWithoutHeader(String file) throws IOException {
+
+
+
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        br.readLine();
+
+        return br;
     }
 
 }

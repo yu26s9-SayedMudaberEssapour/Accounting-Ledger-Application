@@ -31,3 +31,5 @@ date|time|description|vendor|amount
 2026-04-28|10:31:35|phone|iphone|4000.0
 2026-04-28|10:42:20|paycheck|capital 1|5000.0
 2026-04-28|10:49:28|watch|rolex|1000.0
+2026-04-29|09:31:12|water bill|water company|15.0
+2026-04-29|09:31:33|water bill|water company|-15.0
