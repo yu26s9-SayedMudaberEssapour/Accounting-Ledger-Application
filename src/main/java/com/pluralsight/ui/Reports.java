@@ -1,15 +1,14 @@
-package com.pluralsight.model;
+package com.pluralsight.ui;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.pluralsight.model.HomeScreen.*;
-import static com.pluralsight.model.HomeScreen.transactionFile;
+import static com.pluralsight.ui.HomeScreen.*;
+import static com.pluralsight.ui.HomeScreen.transactionFile;
 
 public class Reports {
 
@@ -28,7 +27,7 @@ public class Reports {
                             "Type (6) to do a custom Search\n" +
                             "Type (0) to go back to the ledger page");
             System.out.println();
-            String input = console.promptForString("Please Enter one of the above options: ");
+            String input = Console.promptForString("Please Enter one of the above options: ");
 
             switch(input){
                 case "1" :
@@ -268,7 +267,7 @@ public class Reports {
 
     public static void searchByVendor()
     {
-        String nameOfVendor = console.promptForString("Please enter the name of the vendor: ");
+        String nameOfVendor = Console.promptForString("Please enter the name of the vendor: ");
 
         try{
             BufferedReader br = readFileWithoutHeader(transactionFile);
@@ -299,14 +298,14 @@ public static void customSearch()
 
     {
         try{
-            String StartDate = console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
-            String EndDate = console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
+            String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
+            String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
             LocalDate sDate = LocalDate.parse(StartDate);
             LocalDate eDate = LocalDate.parse(EndDate);
 
-            String Description = console.promptForString("Please enter a description ");
-            String vendor = console.promptForString("Vendor: ");
-            double amount = console.promptForDouble("Amount: ");
+            String Description = Console.promptForString("Please enter a description ");
+            String vendor = Console.promptForString("Vendor: ");
+            double amount = Console.promptForDouble("Amount: ");
 
             BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;

@@ -1,11 +1,10 @@
-package com.pluralsight.model;
-import com.pluralsight.ui.Console;
+package com.pluralsight.ui;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import static com.pluralsight.model.LedgerScreen.LedgerScreen;
+import static com.pluralsight.ui.LedgerScreen.LedgerScreen;
 
 import java.io.IOException;
 import java.time.*;
@@ -24,7 +23,7 @@ public class HomeScreen{
     private String vendor;
     private double amount;
 
-    static Console console = new Console();
+    //static Console console = new Console();
 
     public static final String transactionFile = "src/main/java/com/pluralsight/data/transaction.csv";
 
@@ -45,7 +44,7 @@ public class HomeScreen{
                                 "Type (X) to exit\n");
 
 
-                input = console.promptForString("Please Enter one of the above options: ");
+                input = Console.promptForString("Please Enter one of the above options: ");
 
                 switch(input.toUpperCase()){
                     case "D" :
@@ -80,9 +79,9 @@ public class HomeScreen{
 
 
         try{
-            String description = console.promptForString("Please enter the Description of your deposit: ");
-            String vendor = console.promptForString("Please enter the Vendor name: ");
-            double amount = console.promptForDouble("Please enter the amount here: ");
+            String description = Console.promptForString("Please enter the Description of your deposit: ");
+            String vendor = Console.promptForString("Please enter the Vendor name: ");
+            double amount = Console.promptForDouble("Please enter the amount here: ");
 
             LocalDate date = LocalDate.now();
 
@@ -111,9 +110,9 @@ public class HomeScreen{
     public static void MakePayment(){
 
         try{
-            String description = console.promptForString("Please enter the Description of your payment: ");
-            String vendor = console.promptForString("Please enter the Vendor name: ");
-            double amount = console.promptForDouble("Please enter the amount here: ");
+            String description = Console.promptForString("Please enter the Description of your payment: ");
+            String vendor = Console.promptForString("Please enter the Vendor name: ");
+            double amount = Console.promptForDouble("Please enter the amount here: ");
 
 
             LocalDate date = LocalDate.now();
@@ -133,7 +132,7 @@ public class HomeScreen{
         catch (Exception e){
             System.out.println("Sorry invalid entry, Please only enter a number");
             e.getMessage();
-            homeScreen();
+           // homeScreen();
         }
 
 

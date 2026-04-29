@@ -1,12 +1,10 @@
-package com.pluralsight.model;
-import com.pluralsight.ui.Console;
+package com.pluralsight.ui;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
-import static com.pluralsight.model.HomeScreen.readFileWithoutHeader;
-import static com.pluralsight.model.HomeScreen.transactionFile;
-import static com.pluralsight.model.Reports.ReportsScreen;
+import static com.pluralsight.ui.HomeScreen.readFileWithoutHeader;
+import static com.pluralsight.ui.HomeScreen.transactionFile;
+import static com.pluralsight.ui.Reports.ReportsScreen;
 import java.util.ArrayList;
 import java.util.Collections;
 
