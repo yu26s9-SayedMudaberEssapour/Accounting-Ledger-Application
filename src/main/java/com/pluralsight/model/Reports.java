@@ -343,16 +343,7 @@ public static void customSearch()
 
     }
 
-    public static BufferedReader readFileWithoutHeader(String file) throws IOException {
 
-
-
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        br.readLine();
-
-        return br;
-    }
 
 }
 

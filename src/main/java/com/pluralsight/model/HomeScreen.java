@@ -1,9 +1,13 @@
 package com.pluralsight.model;
 import com.pluralsight.ui.Console;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 
 import static com.pluralsight.model.LedgerScreen.LedgerScreen;
 
+import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -80,22 +84,14 @@ public class HomeScreen{
             String vendor = console.promptForString("Please enter the Vendor name: ");
             double amount = console.promptForDouble("Please enter the amount here: ");
 
-
             LocalDate date = LocalDate.now();
-
-            LocalTime time = LocalTime.now();
-            DateTimeFormatter time1;
-            time1 = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String formattedTime = time.format(time1);
-
 
             FileWriter writer = new FileWriter(transactionFile, true);
 
             StringBuilder userInfo = new StringBuilder();
 
-
             String amountInString = String.valueOf(Math.round(amount * 100.0) / 100.0);
-            userInfo.append(date + "|" + formattedTime + "|" + description + "|" + vendor + "|" + amountInString + "\n");
+            userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
             writer.write(String.valueOf(userInfo));
 
             writer.close();
@@ -122,19 +118,13 @@ public class HomeScreen{
 
             LocalDate date = LocalDate.now();
 
-            LocalTime time = LocalTime.now();
-            DateTimeFormatter time1;
-            time1 = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String formattedTime = time.format(time1);
-
-
             FileWriter writer = new FileWriter(transactionFile, true);
 
             StringBuilder userInfo = new StringBuilder();
 
 
             String amountInString = String.valueOf((Math.round(amount * 100.0) / 100.0) * -1);
-            userInfo.append(date + "|" + formattedTime + "|" + description + "|" + vendor + "|" + amountInString + "\n");
+            userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
             writer.write(String.valueOf(userInfo));
 
             writer.close();
@@ -148,6 +138,25 @@ public class HomeScreen{
 
 
 
+    }
+    public static String timeReturn(){
+
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter time1;
+        time1 = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = time.format(time1);
+
+        return formattedTime;
+    }
+
+
+    public static BufferedReader readFileWithoutHeader(String file) throws IOException {
+
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        br.readLine();
+
+        return br;
     }
 
     @Override

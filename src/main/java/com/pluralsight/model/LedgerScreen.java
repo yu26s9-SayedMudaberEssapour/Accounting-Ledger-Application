@@ -1,13 +1,12 @@
 package com.pluralsight.model;
 import com.pluralsight.ui.Console;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static com.pluralsight.model.HomeScreen.readFileWithoutHeader;
 import static com.pluralsight.model.HomeScreen.transactionFile;
 import static com.pluralsight.model.Reports.ReportsScreen;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,14 +14,6 @@ public class LedgerScreen {
 
     static Console console = new Console();
 
-    /**
-     * we gotta do everything from the most recent to the old
-     */
-
-
-    //Ledger method(you can transfer this to a different class later
-
-    // you will be checking the time of each entry and then showing the most recent ones first
 
     public static void LedgerScreen()
     {
@@ -35,8 +26,7 @@ public class LedgerScreen {
                             "Type (D) to see deposit entries: \n" +
                             "Type (P) to see payment entries: \n" +
                             "Type (R) to go to the report page \n" +
-                            "Type (H) to return back to Home Page");
-            System.out.println();
+                            "Type (H) to return back to Home Page \n");
 
             String input = console.promptForString("Please Enter one of the above options: ");
 
@@ -72,11 +62,7 @@ public class LedgerScreen {
     {
         //read transaction.csv and only display the values
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
+            BufferedReader br = readFileWithoutHeader(transactionFile);
 
             String line;
 
@@ -105,14 +91,9 @@ public class LedgerScreen {
         //check if the amount is negative then print it
 
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
+            BufferedReader br = readFileWithoutHeader(transactionFile);
 
             String line;
-
 
             ArrayList<String> lines = new ArrayList<>();
 
@@ -140,17 +121,10 @@ public class LedgerScreen {
 
     public static void displayDeposit()
     {
-        //check if the amount is negative then print it
 
         try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-
-            //this will be skipping the header in the file
-            br.readLine();
-
+            BufferedReader br = readFileWithoutHeader(transactionFile);
             String line;
-
             ArrayList<String> lines = new ArrayList<String>();
 
             while((line = br.readLine()) != null){
