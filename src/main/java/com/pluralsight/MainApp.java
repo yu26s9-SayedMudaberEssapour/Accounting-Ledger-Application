@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 
+import static com.pluralsight.ui.HomeScreen.MakeDeposit;
 import static com.pluralsight.ui.LedgerScreen.*;
 import static com.pluralsight.ui.Reports.*;
 
@@ -18,14 +19,14 @@ public class MainApp {
 
         //now testing ledger
 
-        //displayAll();
+        displayAll();
         //displayPayment();
         //displayDeposit();
 
 
         //now testing methods in home screen
 
-
+        MakeDeposit();
 
 
     }

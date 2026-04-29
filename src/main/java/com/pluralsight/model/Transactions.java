@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static com.pluralsight.ui.HomeScreen.transactionFile;
-
 public class Transactions {
 
     private String date;
@@ -72,10 +70,11 @@ public class Transactions {
 
     //make an arraylist that keeps track of all of the items in transactions.csv
 
+
+    public static ArrayList<Transactions> fileContent = new ArrayList<>();
+
     public static ArrayList<Transactions> shortMemory(){
 
-
-        ArrayList<Transactions> fileContent = new ArrayList<>();
         try{
 
             FileReader fr = new FileReader(transactionFile);
@@ -103,6 +102,13 @@ public class Transactions {
         return fileContent;
 
     }
+
+
+    public static void writeShortMemory(String date, String time, String description, String vendor, double amount)
+    {
+        fileContent.add(new Transactions(date, time, description, vendor, amount));
+    }
+
 
 
 

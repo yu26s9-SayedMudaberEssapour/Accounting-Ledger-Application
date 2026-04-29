@@ -1,12 +1,9 @@
 package com.pluralsight.ui;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.FileWriter;
 
+import static com.pluralsight.model.Transactions.writeShortMemory;
 import static com.pluralsight.ui.LedgerScreen.LedgerScreen;
 
-import java.io.IOException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -63,24 +60,23 @@ public class HomeScreen{
     {
         //get users deposit information and save it to .csv
         //things to change here (the date) (the time)
-
-
         try{
             String description = Console.promptForString("Please enter the Description of your deposit: ");
             String vendor = Console.promptForString("Please enter the Vendor name: ");
             double amount = Console.promptForDouble("Please enter the amount here: ");
-
             LocalDate date = LocalDate.now();
+            String date1 = String.valueOf(date);
 
             FileWriter writer = new FileWriter(transactionFile, true);
 
             StringBuilder userInfo = new StringBuilder();
-
             String amountInString = String.valueOf(Math.round(amount * 100.0) / 100.0);
-            userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
+            userInfo.append(date1 + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
             writer.write(String.valueOf(userInfo));
+            writeShortMemory(date1, timeReturn(), description, vendor, amount);
 
             writer.close();
+
 
 
         }catch (Exception e){
@@ -100,18 +96,16 @@ public class HomeScreen{
             String description = Console.promptForString("Please enter the Description of your payment: ");
             String vendor = Console.promptForString("Please enter the Vendor name: ");
             double amount = Console.promptForDouble("Please enter the amount here: ");
-
-
             LocalDate date = LocalDate.now();
+            String date1 = String.valueOf(date);
 
             FileWriter writer = new FileWriter(transactionFile, true);
 
             StringBuilder userInfo = new StringBuilder();
-
-
             String amountInString = String.valueOf((Math.round(amount * 100.0) / 100.0) * -1);
             userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
             writer.write(String.valueOf(userInfo));
+            writeShortMemory(date1, timeReturn(), description, vendor, amount);
 
             writer.close();
 
