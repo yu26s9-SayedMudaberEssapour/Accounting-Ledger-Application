@@ -1,13 +1,12 @@
 package com.pluralsight.model;
 import com.pluralsight.ui.Console;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 import static com.pluralsight.model.HomeScreen.transactionFile;
 import static com.pluralsight.model.Reports.ReportsScreen;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -171,5 +170,19 @@ public class LedgerScreen {
             e.getMessage();
         }
     }
+
+
+//    public static ObservableList<String> getRawEntries() {
+//        ObservableList<String> entries = FXCollections.observableArrayList();
+//        try (BufferedReader br = new BufferedReader(new FileReader(transactionFile))) {
+//            br.readLine(); // Skip header
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                entries.add(line); // Add each CSV line to the list
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error reading ledger data.");
+//        }
+//        return entries;}
 
 }

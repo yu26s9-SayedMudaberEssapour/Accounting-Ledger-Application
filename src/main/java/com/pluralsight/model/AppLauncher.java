@@ -16,12 +16,18 @@ public class AppLauncher extends Application {
         launch(args);
     }
 
+    private Stage window; //reference to the main window
+
     @Override
     public void start(Stage primaryStage) {
+        this.window = primaryStage;
+        window.setTitle("Accounting Ledger Application");
+
+
         primaryStage.setTitle("Accounting Ledger Application");
 
         // Welcome Label
-        Label welcomeLabel = new Label("Welcome to Accounting Ledger");
+        Label welcomeLabel = new Label("Welcome to the Home-Page!");
         welcomeLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         // Menu Buttons
@@ -40,9 +46,6 @@ public class AppLauncher extends Application {
         btnDeposit.setOnAction(e -> handleDeposit());
         //button functionality for payment
         btnPayment.setOnAction(e -> handlePayment());
-        btnExit.setOnAction(e -> primaryStage.close());
-
-
 
 
 
@@ -54,6 +57,18 @@ public class AppLauncher extends Application {
         Scene scene = new Scene(menuLayout, 400, 350);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        VBox homeLayout = new VBox(15);
+        homeLayout.setAlignment(Pos.CENTER);
+
+        //now add action so when it says view ledger it should go to ledger page
+        btnPayment.setOnAction(e ->showLedgerScreen());
+
+        homeLayout.getChildren().add(btnLedger);
+        window.setScene(new Scene(homeLayout, 400,350));
+        window.show();
+
+        btnExit.setOnAction(e -> primaryStage.close());
     }
 
 
@@ -107,4 +122,26 @@ public class AppLauncher extends Application {
         });
 
 
-}}
+
+
+
+
+}
+
+
+    private void showLedgerScreen(){
+        VBox ledgerLaout = new VBox(10);
+        ledgerLaout.setAlignment((Pos.CENTER));
+
+        Button btnBack = new Button("Back to Home");
+        btnBack.setOnAction(e -> start(window));//goes back home
+
+        ledgerLaout.getChildren().addAll(new javafx.scene.control.Label("Ledger Screen"), btnBack);
+
+
+        //switch the scene
+        window.setScene(new Scene(ledgerLaout, 600, 400));
+
+
+    }
+}
