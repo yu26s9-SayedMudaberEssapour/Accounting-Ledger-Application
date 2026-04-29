@@ -4,13 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-
-import static com.pluralsight.model.LedgerScreen.LedgerScreen;
 
 import static com.pluralsight.model.HomeScreen.*;
 
@@ -49,10 +45,9 @@ public class Reports {
                     searchByVendor();
                     break;
                 case "0" :
-                    LedgerScreen();
-                    shouldContinue = false;
-                    break;
+                    return;
                 default :
+                    shouldContinue = false;
                     break;
             }
         }
@@ -120,8 +115,6 @@ public class Reports {
         }
 
     }
-
-    //prev month
 
     public static void prevMonth()
     {
@@ -248,9 +241,6 @@ public class Reports {
         int yearNow = Integer.parseInt(splYearmonth[0]);
 
 
-        //find a way to get the month and year by themselves
-
-
         try{
             FileReader fr = new FileReader(transactionFile);
             BufferedReader br = new BufferedReader(fr);
@@ -293,9 +283,6 @@ public class Reports {
 
 
 
-
-    //search by vendor
-
     public static void searchByVendor()
     {
         String nameOfVendor = console.promptForString("Please enter the name of the vendor: ");
@@ -330,4 +317,59 @@ public class Reports {
 
 
 
-}}
+}
+
+
+
+public static void customSearch()
+
+    {
+        try{
+            String StartDate = console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
+            String EndDate = console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
+
+            LocalDate sDate = LocalDate.parse(StartDate);
+            LocalDate eDate = LocalDate.parse(EndDate);
+            String Description = console.promptForString("Please enter a description ");
+            String vendor = console.promptForString("Vendor: ");
+            double amount = console.promptForDouble("Amount: ");
+
+            FileReader fr = new FileReader(transactionFile);
+            BufferedReader br = new BufferedReader(fr);
+
+            br.readLine();
+            String line;
+            while((line = br.readLine()) != null) {
+
+                String[] str = line.split("\\|");
+
+                String date = str[0];
+                String desc = str[2];
+                String vendors = str[3];
+                double amounts = Double.parseDouble(str[4]);
+
+                LocalDate dates = LocalDate.parse(date);
+
+                if ((dates.isAfter(sDate) || date.equals(sDate)) && (dates.isBefore(eDate) || date.equals(eDate))) {
+                    System.out.println(line);
+                } else if (Description.equalsIgnoreCase(desc)) {
+                    System.out.println(line);
+                } else if (vendor.equalsIgnoreCase(vendors)) {
+                    System.out.println(line);
+                } else if (amounts == amount) {
+                    System.out.println(line);
+                }
+
+            }}
+        catch (Exception e){
+            System.out.println("Sorry invalid value please try again: ");
+            e.getMessage();
+
+        }
+
+
+    }
+
+}
+
+

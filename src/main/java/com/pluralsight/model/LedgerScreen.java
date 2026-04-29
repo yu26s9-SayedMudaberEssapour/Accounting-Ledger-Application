@@ -5,15 +5,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static com.pluralsight.model.HomeScreen.homeScreen;
 import static com.pluralsight.model.HomeScreen.transactionFile;
 import static com.pluralsight.model.Reports.ReportsScreen;
 
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class LedgerScreen {
 
@@ -44,28 +40,21 @@ public class LedgerScreen {
 
             String input = console.promptForString("Please Enter one of the above options: ");
 
-            switch(input){
+            switch(input.toUpperCase()){
                 case "A" :
-                case "a" :
                     displayAll();
                     break;
                 case "P" :
-                case "p" :
-                    payment();
+                    displayPayment();
                     break;
                 case "D" :
-                case "d" :
                     displayDeposit();
                     break;
                 case "R" :
-                case "r" :
                     ReportsScreen();
                     break;
                 case "H" :
-                case "h" :
-                    homeScreen();
-                    shouldContinue = false;
-                    break;
+                    return;
                 default :
                     shouldContinue = false;
                     break;
@@ -111,7 +100,7 @@ public class LedgerScreen {
 
 
 
-    public static void payment()
+    public static void displayPayment()
     {
         //check if the amount is negative then print it
 
@@ -176,8 +165,6 @@ public class LedgerScreen {
             for(String L : lines){
                 System.out.println(L.toString());
             }
-
-
 
         }
         catch (IOException e){
