@@ -2,17 +2,12 @@ package com.pluralsight.ui;
 
 import com.pluralsight.model.Transactions;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static com.pluralsight.model.Transactions.shortMemory;
-import static com.pluralsight.ui.HomeScreen.*;
-import static com.pluralsight.ui.HomeScreen.transactionFile;
 
 public class Reports {
 
@@ -63,217 +58,157 @@ public class Reports {
         while(shouldContinue);
     }
 
+    public static String monthFormatter(){
+        //This will give the current date of my local area
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter date1;
+        date1 = DateTimeFormatter.ofPattern("yyyy-MM");
+        String formattedTime = date.format(date1);
+
+        return formattedTime;
+    }
+
 
     /**
      * it works to how I intend it to work.
+     * collection.reverse only works in the list is sorted and if it is not it will not work
      */
     public static void monthToDate(){
 
-        //This will give the current date of my local area
-        LocalDate date = LocalDate.now();
+        String yearMonth = monthFormatter();
 
-        DateTimeFormatter date1;
-        date1 = DateTimeFormatter.ofPattern("yyyy-MM");
-        String formattedTime = date.format(date1);
+        ArrayList<String> lines = new ArrayList<>();
+        for(Transactions e : shortMemory()){
+            String[] splitDate = e.getDate().split("-");
 
-        String yearMonth = formattedTime;
+            String year = splitDate[0];
+            String month = splitDate[1];
+            String yearAndMonth = year + "-" + month;
 
-        //I can split yearMonth and compare the values
-
-        //then get all of the other ones in the same month
-
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-
-            String line;
-
-            ArrayList<String> lines = new ArrayList<>();
-
-            while((line = br.readLine()) != null){
-
-                //split by category
-                String[] splittingLine = line.split("\\|");
-
-                //split by date
-                String[] splitDate = splittingLine[0].split("-");
-
-
-                String year = splitDate[0];
-                String month = splitDate[1];
-                String yearAndMonth = year + "-" + month;
-
-                if(yearAndMonth.equalsIgnoreCase(yearMonth)){
-                    lines.add(line);
-                }
-
-            }
-
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
+            if(yearAndMonth.equalsIgnoreCase(yearMonth)){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
             }
         }
-        catch (IOException e){
-            e.getMessage();
+
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
         }
+
+
 
     }
 
+
     public static void prevMonth()
     {
-        //This will give the current date of my local area
-        LocalDate date = LocalDate.now();
-
-        DateTimeFormatter date1;
-        date1 = DateTimeFormatter.ofPattern("yyyy-MM");
-        String formattedTime = date.format(date1);
-
-        String[] splYearmonth = formattedTime.split("-");
+        String[] splYearmonth = monthFormatter().split("-");
 
         String yearNow = splYearmonth[0];
         int monthNow = Integer.parseInt(splYearmonth[1]);
 
+        ArrayList<String> lines = new ArrayList<>();
+
+        for(Transactions e : shortMemory()){
+            String[] splitDate = e.getDate().split("-");
 
 
-        //find a way to get the month and year by themselves
+            String year = splitDate[0];
+            int month = Integer.parseInt(splitDate[1]);
 
-
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            String line;
-            ArrayList<String> lines = new ArrayList<>();
-
-            while((line = br.readLine()) != null){
-
-                //split by category
-                String[] splittingLine = line.split("\\|");
-
-                //split by date
-                String[] splitDate = splittingLine[0].split("-");
-
-
-                String year = splitDate[0];
-                int month = Integer.parseInt(splitDate[1]);
-
-                int prevmonth = monthNow - 2;
-                if((year.equalsIgnoreCase(yearNow)) && ( (month > prevmonth) && (month < monthNow))){
-                    lines.add(line);
-                }
-
+            int prevmonth = monthNow - 2;
+            if((year.equalsIgnoreCase(yearNow)) && ( (month > prevmonth) && (month < monthNow))){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
             }
 
-            Collections.reverse(lines);
+        }
 
-            for(String L : lines){
-                System.out.println(L.toString());
-            }
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
         }
-        catch (IOException e){
-            e.getMessage();
-        }
+
     }
 
+    //___________________________year_____________________________________
 
-    public static void yearTodate()
-    {
+    public static String yearFormater(){
         //This will give the current date of my local area
         LocalDate date = LocalDate.now();
 
         DateTimeFormatter date1;
         date1 = DateTimeFormatter.ofPattern("yyyy");
         String formattedTime = date.format(date1);
-
-        String year = formattedTime;
-
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-
-            String line;
-
-            ArrayList<String> lines = new ArrayList<>();
-
-            while((line = br.readLine()) != null){
-
-                //split by category
-                String[] splittingLine = line.split("\\|");
-
-                //split by date
-                String[] splitDate = splittingLine[0].split("-");
-
-                String yearsInFile = splitDate[0];
-
-                if(yearsInFile.equalsIgnoreCase(year)){
-                    lines.add(line);
-                }
-            }
-
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
-            }
-        }
-        catch (IOException e){
-            e.getMessage();
-        }
+        return formattedTime;
     }
 
 
+    public static void yearTodate()
+    {
+
+
+        String year = yearFormater();
+
+        ArrayList<String> lines = new ArrayList<>();
+
+        for(Transactions e : shortMemory()){
+            String[] splitDate = e.getDate().split("-");
+
+            String yearsInFile = splitDate[0];
+
+            if(yearsInFile.equalsIgnoreCase(year)){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+            }
+        }
+
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
+        }
+
+
+    }
+
+
+
+
+    //refactored just need to fix the reversing problem
     public static void prevYear()
     {
-        //This will give the current date of my local area
-        LocalDate date = LocalDate.now();
 
-        DateTimeFormatter date1;
-        date1 = DateTimeFormatter.ofPattern("yyyy-MM");
-        String formattedTime = date.format(date1);
-
-        String[] splYearmonth = formattedTime.split("-");
+        String[] splYearmonth = yearFormater().split("-");
 
         int yearNow = Integer.parseInt(splYearmonth[0]);
 
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            String line;
-            ArrayList<String> lines = new ArrayList<>();
+        ArrayList<String> lines = new ArrayList<>();
+        for(Transactions e : shortMemory()){
+            String[] splitDate = e.getDate().split("-");
 
-            while((line = br.readLine()) != null){
+            int year = Integer.parseInt(splitDate[0]);
+            int prevYear = yearNow - 2;
 
-                //split by category
-                String[] splittingLine = line.split("\\|");
-
-                //split by date
-                String[] splitDate = splittingLine[0].split("-");
-
-
-                int year = Integer.parseInt(splitDate[0]);
-
-                int prevYear = yearNow - 2;
-                if((year > prevYear) && (year < yearNow)){
-                    lines.add(line);
-                }
-
-            }
-            //fix this so that it works with all not just a sorted list
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
+            if((year > prevYear) && (year < yearNow)){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
             }
         }
-        catch (IOException e){
-            e.getMessage();
+        //fix this part of the code
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
         }
     }
+
+
+
+
+
+
+
+
 
 
     public static void searchByVendor()
@@ -287,65 +222,11 @@ public class Reports {
             }
         }
 
-
-
-
 }
 
 
-
-//public static void customSearch()
-//
-//    {
-//        try{
-//            String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
-//            String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
-//            LocalDate sDate = LocalDate.parse(StartDate);
-//            LocalDate eDate = LocalDate.parse(EndDate);
-//
-//            String Description = Console.promptForString("Please enter a description ");
-//            String vendor = Console.promptForString("Vendor: ");
-//            double amount = Console.promptForDouble("Amount: ");
-//
-//            FileReader fr = new FileReader(transactionFile);
-//            BufferedReader br = new BufferedReader(fr);
-//            br.readLine();
-//            String line;
-//            while((line = br.readLine()) != null) {
-//
-//                String[] str = line.split("\\|");
-//
-//                String date = str[0];
-//                String desc = str[2];
-//                String vendors = str[3];
-//                double amounts = Double.parseDouble(str[4]);
-//
-//                LocalDate dates = LocalDate.parse(date);
-//
-//
-//                if ((dates.isAfter(sDate) || date.equals(sDate)) && (dates.isBefore(eDate) || date.equals(eDate))) {
-//                    System.out.println(line);
-//                } else if (Description.equalsIgnoreCase(desc)) {
-//                    System.out.println(line);
-//                } else if (vendor.equalsIgnoreCase(vendors)) {
-//                    System.out.println(line);
-//                } else if (amounts == amount) {
-//                    System.out.println(line);
-//                }
-//
-//
-//            }}
-//        catch (Exception e){
-//            System.out.println("Sorry invalid value please try again: ");
-//            e.getMessage();
-//
-//        }
-
-
-    //}
-
+    //still needs to account for empty values, add try and catch method wherever needed
     public static void customSearch(){
-        try{
             String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
             String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
             LocalDate sDate = LocalDate.parse(StartDate);
@@ -355,31 +236,34 @@ public class Reports {
             String vendor = Console.promptForString("Vendor: ");
             double amount = Console.promptForDouble("Amount: ");
 
-            for(Transactions e : shortMemory()){
+            try {
+                for (Transactions e : shortMemory()) {
 
-                LocalDate dates = LocalDate.parse(e.getDate());
-                if ((dates.isAfter(sDate) || e.getDate().equals(sDate)) && (dates.isBefore(eDate) || e.getDate().equals(eDate))) {
-                    System.out.println(e.getDate() + "|" + e.getTime() + "|" +  e.getDescription() + "|" + e.getVendor() + "|" +  e.getAmount());
-                } else if (Description.equalsIgnoreCase(e.getDescription())) {
-                    System.out.println(e.getDate() + "|" + e.getTime() + "|" +  e.getDescription() + "|" + e.getVendor() + "|" +  e.getAmount());
-                } else if (vendor.equalsIgnoreCase(e.getVendor())) {
-                    System.out.println(e.getDate() + "|" + e.getTime() + "|" +  e.getDescription() + "|" + e.getVendor() + "|" +  e.getAmount());
-                } else if (e.getAmount() == amount) {
-                    System.out.println(e.getDate() + "|" + e.getTime() + "|" +  e.getDescription() + "|" + e.getVendor() + "|" +  e.getAmount());
+                    LocalDate dates = LocalDate.parse(e.getDate());
+                    if (dates.isAfter(sDate) && dates.isBefore(eDate) && !StartDate.equalsIgnoreCase("")) {
+                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+
+                    } else if (Description.equalsIgnoreCase(e.getDescription()) && !(StartDate.equalsIgnoreCase(""))) {
+                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+
+                    } else if (vendor.equalsIgnoreCase(e.getVendor()) && !(StartDate.equalsIgnoreCase(""))) {
+                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+
+                    } else if (e.getAmount() == amount) {
+                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+                    }
                 }
 
-            }}
-        catch (Exception e){
-            System.out.println("Sorry invalid value please try again: ");
-            e.getMessage();
-
-        }
-    }
+            }
+            catch (Exception e){
+                e.getMessage();
+            }
 
 
 
 
 
-}
+
+}}
 
 

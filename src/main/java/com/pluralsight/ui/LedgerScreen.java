@@ -1,8 +1,11 @@
 package com.pluralsight.ui;
+import com.pluralsight.model.Transactions;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static com.pluralsight.model.Transactions.shortMemory;
 import static com.pluralsight.ui.HomeScreen.transactionFile;
 import static com.pluralsight.ui.Reports.ReportsScreen;
 import java.util.ArrayList;
@@ -58,28 +61,16 @@ public class LedgerScreen {
     //works very well(reverse read the values)
     public static void displayAll()
     {
-        //read transaction.csv and only display the values
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
+        ArrayList<String> lines = new ArrayList<>();
 
-            String line;
-
-            ArrayList<String> lines = new ArrayList<>();
-
-            while((line = br.readLine()) != null){
-                lines.add(line);
-            }
-
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
-            }
+        for(Transactions e : shortMemory()){
+            lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
         }
-        catch (IOException e){
-            e.getMessage();
+
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
         }
 
     }
@@ -88,65 +79,36 @@ public class LedgerScreen {
 
     public static void displayPayment()
     {
-        //check if the amount is negative then print it
 
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
+        ArrayList<String> lines = new ArrayList<>();
 
-            String line;
-
-            ArrayList<String> lines = new ArrayList<>();
-
-            while((line = br.readLine()) != null){
-                String[] str = line.split("\\|");
-                double negativeAmount = Double.parseDouble(str[4]);
-                if(negativeAmount < 0){
-                    lines.add(line);
-                }}
-
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
+        for(Transactions e : shortMemory()){
+            if(e.getAmount() < 0){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
             }
 
         }
-        catch (IOException e){
-            e.getMessage();
+
+        Collections.reverse(lines);
+
+        for(String L : lines){
+            System.out.println(L.toString());
         }
     }
 
 
 
-
     public static void displayDeposit()
     {
-
-        try{
-            FileReader fr = new FileReader(transactionFile);
-            BufferedReader br = new BufferedReader(fr);
-            br.readLine();
-            String line;
-            ArrayList<String> lines = new ArrayList<String>();
-
-            while((line = br.readLine()) != null){
-                String[] str = line.split("\\|");
-                double PosAmount = Double.parseDouble(str[4]);
-                if(PosAmount > 0){
-                    lines.add(line);
-                }}
-
-            Collections.reverse(lines);
-
-            for(String L : lines){
-                System.out.println(L.toString());
+        ArrayList<String> lines = new ArrayList<>();
+        for(Transactions e : shortMemory()){
+            if(e.getAmount() > 0){
+                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
             }
-
         }
-        catch (IOException e){
-            e.getMessage();
+        Collections.reverse(lines);
+        for(String L : lines){
+            System.out.println(L.toString());
         }
     }
 
