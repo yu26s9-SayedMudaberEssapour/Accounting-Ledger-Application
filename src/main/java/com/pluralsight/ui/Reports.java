@@ -11,8 +11,7 @@ import static com.pluralsight.model.Transactions.shortMemory;
 
 public class Reports {
 
-    public static void ReportsScreen()
-    {
+    public static void ReportsScreen() {
         boolean shouldContinue = true;
         do {
             System.out.println();
@@ -28,37 +27,37 @@ public class Reports {
             System.out.println();
             String input = Console.promptForString("Please Enter one of the above options: ");
 
-            switch(input){
-                case "1" :
+            switch (input) {
+                case "1":
                     monthToDate();
                     break;
-                case "2" :
+                case "2":
                     prevMonth();
                     break;
-                case "3" :
+                case "3":
                     yearTodate();
                     break;
-                case "4" :
+                case "4":
                     prevYear();
                     break;
-                case "5" :
+                case "5":
                     searchByVendor();
                     break;
-                case "6" :
-                    customSearch();
+                case "6":
+                    //customSearch();
                     break;
-                case "0" :
+                case "0":
                     return;
-                default :
+                default:
                     shouldContinue = false;
                     break;
             }
         }
 
-        while(shouldContinue);
+        while (shouldContinue);
     }
 
-    public static String monthFormatter(){
+    public static String monthFormatter() {
         //This will give the current date of my local area
         LocalDate date = LocalDate.now();
         DateTimeFormatter date1;
@@ -73,36 +72,34 @@ public class Reports {
      * it works to how I intend it to work.
      * collection.reverse only works in the list is sorted and if it is not it will not work
      */
-    public static void monthToDate(){
+    public static void monthToDate() {
 
         String yearMonth = monthFormatter();
 
         ArrayList<String> lines = new ArrayList<>();
-        for(Transactions e : shortMemory()){
-            String[] splitDate = e.getDate().split("-");
+        for(int i = 0; i <= shortMemory().size(); i++){
+            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
 
             String year = splitDate[0];
             String month = splitDate[1];
             String yearAndMonth = year + "-" + month;
 
-            if(yearAndMonth.equalsIgnoreCase(yearMonth)){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+            if (yearAndMonth.equalsIgnoreCase(yearMonth)) {
+                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
             }
         }
 
         Collections.reverse(lines);
 
-        for(String L : lines){
+        for (String L : lines) {
             System.out.println(L.toString());
         }
-
 
 
     }
 
 
-    public static void prevMonth()
-    {
+    public static void prevMonth() {
         String[] splYearmonth = monthFormatter().split("-");
 
         String yearNow = splYearmonth[0];
@@ -110,23 +107,23 @@ public class Reports {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        for(Transactions e : shortMemory()){
-            String[] splitDate = e.getDate().split("-");
+        for(int i = 0; i <= shortMemory().size(); i++){
+            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
 
 
             String year = splitDate[0];
             int month = Integer.parseInt(splitDate[1]);
 
             int prevmonth = monthNow - 2;
-            if((year.equalsIgnoreCase(yearNow)) && ( (month > prevmonth) && (month < monthNow))){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+            if ((year.equalsIgnoreCase(yearNow)) && ((month > prevmonth) && (month < monthNow))) {
+                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
             }
 
         }
 
         Collections.reverse(lines);
 
-        for(String L : lines){
+        for (String L : lines) {
             System.out.println(L.toString());
         }
 
@@ -134,7 +131,7 @@ public class Reports {
 
     //___________________________year_____________________________________
 
-    public static String yearFormater(){
+    public static String yearFormater() {
         //This will give the current date of my local area
         LocalDate date = LocalDate.now();
 
@@ -145,27 +142,26 @@ public class Reports {
     }
 
 
-    public static void yearTodate()
-    {
+    public static void yearTodate() {
 
 
         String year = yearFormater();
 
         ArrayList<String> lines = new ArrayList<>();
 
-        for(Transactions e : shortMemory()){
-            String[] splitDate = e.getDate().split("-");
+        for(int i = 0; i <= shortMemory().size(); i++){
+            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");;
 
             String yearsInFile = splitDate[0];
 
-            if(yearsInFile.equalsIgnoreCase(year)){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+            if (yearsInFile.equalsIgnoreCase(year)) {
+                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
             }
         }
 
         Collections.reverse(lines);
 
-        for(String L : lines){
+        for (String L : lines) {
             System.out.println(L.toString());
         }
 
@@ -173,97 +169,86 @@ public class Reports {
     }
 
 
-
-
     //refactored just need to fix the reversing problem
-    public static void prevYear()
-    {
+    public static void prevYear() {
 
         String[] splYearmonth = yearFormater().split("-");
 
         int yearNow = Integer.parseInt(splYearmonth[0]);
 
         ArrayList<String> lines = new ArrayList<>();
-        for(Transactions e : shortMemory()){
-            String[] splitDate = e.getDate().split("-");
+
+        for(int i = 0; i <= shortMemory().size(); i++){
+            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
 
             int year = Integer.parseInt(splitDate[0]);
             int prevYear = yearNow - 2;
 
-            if((year > prevYear) && (year < yearNow)){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+            if ((year > prevYear) && (year < yearNow)) {
+                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
             }
         }
         //fix this part of the code
         Collections.reverse(lines);
 
-        for(String L : lines){
+        for (String L : lines) {
             System.out.println(L.toString());
         }
     }
 
 
-
-
-
-
-
-
-
-
-    public static void searchByVendor()
-    {
+    public static void searchByVendor() {
         String nameOfVendor = Console.promptForString("Please enter the name of the vendor: ");
 
 
-        for(Transactions e : shortMemory()){
-            if(e.getVendor().equalsIgnoreCase(nameOfVendor)){
-                System.out.println(e);
+        for(int i = 0; i <= shortMemory().size(); i++){
+            if (String.valueOf(shortMemory().get(3)).equalsIgnoreCase(nameOfVendor)) {
+                System.out.println(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
             }
         }
 
-}
+    }
 
 
     //still needs to account for empty values, add try and catch method wherever needed
-    public static void customSearch(){
-            String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
-            String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
-            LocalDate sDate = LocalDate.parse(StartDate);
-            LocalDate eDate = LocalDate.parse(EndDate);
+//    public static void customSearch(){
+//            String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
+//            String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
+//            LocalDate sDate = LocalDate.parse(StartDate);
+//            LocalDate eDate = LocalDate.parse(EndDate);
+//
+//            String Description = Console.promptForString("Please enter a description ");
+//            String vendor = Console.promptForString("Vendor: ");
+//            double amount = Console.promptForDouble("Amount: ");
+//
+//            try {
+//                for (Transactions e : shortMemory()) {
+//
+//                    LocalDate dates = LocalDate.parse(e.getDate());
+//                    if (dates.isAfter(sDate) && dates.isBefore(eDate) && !StartDate.equalsIgnoreCase("")) {
+//                        lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
+//                    } else if (Description.equalsIgnoreCase(e.getDescription()) && !(StartDate.equalsIgnoreCase(""))) {
+//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+//
+//                    } else if (vendor.equalsIgnoreCase(e.getVendor()) && !(StartDate.equalsIgnoreCase(""))) {
+//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+//
+//                    } else if (e.getAmount() == amount) {
+//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
+//                    }
+//                }
+//
+//            }
+//            catch (Exception e){
+//                e.getMessage();
+//            }
+//
+//
+//
+//
+//
+//
+//}}
 
-            String Description = Console.promptForString("Please enter a description ");
-            String vendor = Console.promptForString("Vendor: ");
-            double amount = Console.promptForDouble("Amount: ");
 
-            try {
-                for (Transactions e : shortMemory()) {
-
-                    LocalDate dates = LocalDate.parse(e.getDate());
-                    if (dates.isAfter(sDate) && dates.isBefore(eDate) && !StartDate.equalsIgnoreCase("")) {
-                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-
-                    } else if (Description.equalsIgnoreCase(e.getDescription()) && !(StartDate.equalsIgnoreCase(""))) {
-                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-
-                    } else if (vendor.equalsIgnoreCase(e.getVendor()) && !(StartDate.equalsIgnoreCase(""))) {
-                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-
-                    } else if (e.getAmount() == amount) {
-                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-                    }
-                }
-
-            }
-            catch (Exception e){
-                e.getMessage();
-            }
-
-
-
-
-
-
-}}
-
-
+}

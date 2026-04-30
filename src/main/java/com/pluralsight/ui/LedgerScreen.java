@@ -1,15 +1,8 @@
 package com.pluralsight.ui;
 import com.pluralsight.model.Transactions;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 import static com.pluralsight.model.Transactions.shortMemory;
-import static com.pluralsight.ui.HomeScreen.transactionFile;
 import static com.pluralsight.ui.Reports.ReportsScreen;
-import java.util.ArrayList;
-import java.util.Collections;
+
 
 public class LedgerScreen {
 
@@ -61,16 +54,8 @@ public class LedgerScreen {
     //works very well(reverse read the values)
     public static void displayAll()
     {
-        ArrayList<String> lines = new ArrayList<>();
-
-        for(Transactions e : shortMemory()){
-            lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-        }
-
-        Collections.reverse(lines);
-
-        for(String L : lines){
-            System.out.println(L.toString());
+        for(Transactions e: shortMemory()){
+            System.out.println(e);
         }
 
     }
@@ -79,37 +64,25 @@ public class LedgerScreen {
 
     public static void displayPayment()
     {
+        for(Transactions e: shortMemory()){
+//
+            if(Double.parseDouble(String.valueOf(e.getAmount())) < 0){
+                System.out.println(e);
 
-        ArrayList<String> lines = new ArrayList<>();
+        }}
 
-        for(Transactions e : shortMemory()){
-            if(e.getAmount() < 0){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-            }
-
-        }
-
-        Collections.reverse(lines);
-
-        for(String L : lines){
-            System.out.println(L.toString());
-        }
     }
 
 
 
     public static void displayDeposit()
     {
-        ArrayList<String> lines = new ArrayList<>();
-        for(Transactions e : shortMemory()){
-            if(e.getAmount() > 0){
-                lines.add(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-            }
-        }
-        Collections.reverse(lines);
-        for(String L : lines){
-            System.out.println(L.toString());
-        }
-    }
+        for(Transactions e: shortMemory()){
+//
+            if(Double.parseDouble(String.valueOf(e.getAmount())) > 0){
+                System.out.println(e);
 
-}
+            }}
+
+        }}
+

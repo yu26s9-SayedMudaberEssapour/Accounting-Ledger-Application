@@ -1,7 +1,12 @@
 package com.pluralsight;
 
 
-import static com.pluralsight.ui.HomeScreen.MakeDeposit;
+import com.pluralsight.model.Transactions;
+
+import java.time.LocalDateTime;
+
+import static com.pluralsight.model.Transactions.*;
+import static com.pluralsight.ui.HomeScreen.*;
 import static com.pluralsight.ui.LedgerScreen.*;
 import static com.pluralsight.ui.Reports.*;
 
@@ -19,14 +24,26 @@ public class MainApp {
 
         //now testing ledger
 
-        displayAll();
+        //displayAll();
         //displayPayment();
         //displayDeposit();
+        //LocalDateTime noe = LocalDateTime.now();
+        //System.out.println(noe);
+
+
+//        for(Transactions e : shortMemory()){
+//            System.out.println(e);
+//        }
+
+
+
+
 
 
         //now testing methods in home screen
 
-        MakeDeposit();
+        //MakeDeposit();
+        displayDeposit();
 
 
     }

@@ -6,9 +6,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class Transactions {
 
@@ -17,6 +21,7 @@ public class Transactions {
     private String description;
     private String vendor;
     private double amount;
+    private LocalDateTime localDateTime;
 
     public static final String transactionFile = "src/main/java/com/pluralsight/data/transaction.csv";
 
@@ -26,14 +31,16 @@ public class Transactions {
         this.description = description;
         this.vendor = vendor;
         this.amount = amount;
+
+        this.localDateTime = LocalDateTime.parse(date + "T" + time);
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setData(String data) {
-        this.date = data;
+    public void setData(String date) {
+        this.date = date;
     }
 
     public String getTime() {
@@ -64,18 +71,26 @@ public class Transactions {
         return amount;
     }
 
+
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
+    public LocalDateTime getLocalDT() {
+        return this.localDateTime;
+    }
+
+
+
     //make an arraylist that keeps track of all of the items in transactions.csv
-
-
     public static ArrayList<Transactions> fileContent = new ArrayList<>();
 
-    public static ArrayList<Transactions> shortMemory(){
 
-        try{
+    //always at runtime your array should be sorted
+
+    public static ArrayList<Transactions> shortMemory()
+    {
+        try {
 
             FileReader fr = new FileReader(transactionFile);
             BufferedReader br = new BufferedReader(fr);
@@ -83,25 +98,41 @@ public class Transactions {
 
             String line;
 
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null)
+            {
                 String[] str = line.split("\\|");
 
-                String date = str[0];
-                String time = str[1];
-                String desc = str[2];
-                String vendor = str[3];
-                double amount = Double.parseDouble(str[4]);
+                String date1 = str[0];
+                String time1 = str[1];
+                String desc1 = str[2];
+                String vendor1 = str[3];
+                double amount1 = Double.parseDouble(str[4]);
 
-                fileContent.add(new Transactions(date, time, desc, vendor, amount));
+                fileContent.add(new Transactions(date1, time1, desc1, vendor1, amount1));
 
-        }}
-        catch (IOException e){
+            }
+        }
+
+        catch (IOException e)
+        {
             e.getMessage();
         }
+
+        fileContent.sort(Comparator.comparing(Transactions::getLocalDT));
+
+        Collections.reverse(fileContent);
+
+
 
         return fileContent;
 
     }
+
+
+
+
+
+    //____________________________________writing_____________________________________
 
 
     public static void writeShortMemory(String date, String time, String description, String vendor, double amount)
@@ -111,15 +142,8 @@ public class Transactions {
 
 
 
-
     @Override
     public String toString() {
-        return "Transactions{" +
-                "date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", description='" + description + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", amount=" + amount +
-                '}';
+        return String.format("%s|%s|%s|%s|%.2f", date, time, description, vendor, amount);
     }
 }
