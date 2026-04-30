@@ -51,6 +51,8 @@ public class HomeScreen{
 
             while(!input.equalsIgnoreCase("x"));
 
+
+
     }
 
 
@@ -72,12 +74,11 @@ public class HomeScreen{
             StringBuilder userInfo = new StringBuilder();
             String amountInString = String.valueOf(Math.round(amount * 100.0) / 100.0);
             userInfo.append(date1 + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
+
             writer.write(String.valueOf(userInfo));
             writeShortMemory(date1, timeReturn(), description, vendor, amount);
 
             writer.close();
-
-
 
         }catch (Exception e){
             System.out.println("Sorry invalid value, please enter only a number: ");
@@ -105,6 +106,7 @@ public class HomeScreen{
             String amountInString = String.valueOf((Math.round(amount * 100.0) / 100.0) * -1);
             userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
             writer.write(String.valueOf(userInfo));
+            //writing to the short memory too
             writeShortMemory(date1, timeReturn(), description, vendor, amount);
 
             writer.close();

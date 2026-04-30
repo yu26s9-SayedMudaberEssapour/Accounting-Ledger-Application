@@ -4,6 +4,7 @@ import com.pluralsight.ui.Console;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -122,9 +123,26 @@ public class Transactions {
 
         Collections.reverse(fileContent);
 
-
-
         return fileContent;
+
+    }
+
+
+
+    public static void sortfile(){
+
+        for(Transactions t : shortMemory()){
+            try{
+                FileWriter fr = new FileWriter(transactionFile);
+
+                fr.write()
+                fr.write(t.toString());
+                fr.close();
+            }
+            catch (IOException e){
+                e.getMessage();
+            }
+        }
 
     }
 

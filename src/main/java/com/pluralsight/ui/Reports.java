@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.jar.JarOutputStream;
 
 import static com.pluralsight.model.Transactions.shortMemory;
 
@@ -70,64 +71,45 @@ public class Reports {
 
     /**
      * it works to how I intend it to work.
-     * collection.reverse only works in the list is sorted and if it is not it will not work
      */
     public static void monthToDate() {
 
         String yearMonth = monthFormatter();
 
-        ArrayList<String> lines = new ArrayList<>();
-        for(int i = 0; i <= shortMemory().size(); i++){
-            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
-
+        for(Transactions e : shortMemory()){
+            String[] splitDate = e.getDate().split("-");
             String year = splitDate[0];
             String month = splitDate[1];
             String yearAndMonth = year + "-" + month;
 
+            //fix this later
             if (yearAndMonth.equalsIgnoreCase(yearMonth)) {
-                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
+                System.out.println(e);
             }
         }
 
-        Collections.reverse(lines);
-
-        for (String L : lines) {
-            System.out.println(L.toString());
-        }
-
-
     }
-
 
     public static void prevMonth() {
         String[] splYearmonth = monthFormatter().split("-");
-
+        //month and year right now
         String yearNow = splYearmonth[0];
         int monthNow = Integer.parseInt(splYearmonth[1]);
 
-        ArrayList<String> lines = new ArrayList<>();
-
-        for(int i = 0; i <= shortMemory().size(); i++){
-            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
-
-
+        for(Transactions e : shortMemory()){
+            String[] splitDate = String.valueOf(e.getDate()).split("-");
             String year = splitDate[0];
             int month = Integer.parseInt(splitDate[1]);
-
             int prevmonth = monthNow - 2;
+
             if ((year.equalsIgnoreCase(yearNow)) && ((month > prevmonth) && (month < monthNow))) {
-                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
+                System.out.println(e);
             }
 
         }
 
-        Collections.reverse(lines);
-
-        for (String L : lines) {
-            System.out.println(L.toString());
-        }
-
     }
+
 
     //___________________________year_____________________________________
 
@@ -142,70 +124,54 @@ public class Reports {
     }
 
 
-    public static void yearTodate() {
 
+
+    //this method is also working
+    public static void yearTodate() {
 
         String year = yearFormater();
 
-        ArrayList<String> lines = new ArrayList<>();
-
-        for(int i = 0; i <= shortMemory().size(); i++){
-            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");;
-
+        for(Transactions e : shortMemory()){
+            String[] splitDate = String.valueOf(e.getDate()).split("-");
             String yearsInFile = splitDate[0];
-
-            if (yearsInFile.equalsIgnoreCase(year)) {
-                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
-            }
+            if (yearsInFile.equalsIgnoreCase(year)){
+                System.out.println(e);
         }
-
-        Collections.reverse(lines);
-
-        for (String L : lines) {
-            System.out.println(L.toString());
         }
-
 
     }
 
-
+    //alhamdullilah it is working
     //refactored just need to fix the reversing problem
     public static void prevYear() {
 
         String[] splYearmonth = yearFormater().split("-");
-
+        //this takes the year right now
         int yearNow = Integer.parseInt(splYearmonth[0]);
 
-        ArrayList<String> lines = new ArrayList<>();
-
-        for(int i = 0; i <= shortMemory().size(); i++){
-            String[] splitDate = String.valueOf(shortMemory().getFirst()).split("-");
+        for(Transactions e : shortMemory()){
+            String[] splitDate = String.valueOf(e.getDate()).split("-");
 
             int year = Integer.parseInt(splitDate[0]);
             int prevYear = yearNow - 2;
-
             if ((year > prevYear) && (year < yearNow)) {
-                lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
+                System.out.println(e);
             }
-        }
-        //fix this part of the code
-        Collections.reverse(lines);
 
-        for (String L : lines) {
-            System.out.println(L.toString());
         }
     }
 
 
+    //this method is also working well
     public static void searchByVendor() {
         String nameOfVendor = Console.promptForString("Please enter the name of the vendor: ");
 
-
-        for(int i = 0; i <= shortMemory().size(); i++){
-            if (String.valueOf(shortMemory().get(3)).equalsIgnoreCase(nameOfVendor)) {
-                System.out.println(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
+        for(Transactions e : shortMemory()){
+            if (String.valueOf(e.getVendor()).equalsIgnoreCase(nameOfVendor)){
+                System.out.println(e);
             }
         }
+
 
     }
 
