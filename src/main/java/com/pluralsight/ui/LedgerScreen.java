@@ -2,113 +2,102 @@ package com.pluralsight.ui;
 import com.pluralsight.model.Transactions;
 
 import static com.pluralsight.model.Transactions.fileContent;
+import static com.pluralsight.model.Transactions.listSort;
 import static com.pluralsight.ui.HomeScreen.homeScreen;
 import static com.pluralsight.ui.Reports.ReportsScreen;
 import static com.pluralsight.ui.Reports.promptToStay;
 
-
+/**
+ * This class represents the Ledger Screen of the application.
+ * It allows users to view transactions and navigate between different options.
+ */
 public class LedgerScreen {
 
-    static Console console = new Console();
-
-
+    /**
+     * Displays the main ledger screen menu and handles user input.
+     * Allows navigation to different transaction views and reports.
+     */
     public static void LedgerScreens() {
-        boolean shouldContinue = true;
-        do {
-            System.out.println();
-            System.out.println(
-                    "Welcome to the Ledger-Screen!! \n" +
-                            "Type (A) to display all entries: \n" +
-                            "Type (D) to see deposit entries: \n" +
-                            "Type (P) to see payment entries: \n" +
-                            "Type (R) to go to the report page \n" +
-                            "Type (H) to return back to Home Page \n");
+        listSort();
+        while (true) {
 
-            String input = Console.promptForString("Please Enter one of the above options: ");
+            System.out.println("""
+                
+                Welcome to the Ledger-Screen!! 
+                Type (A) to display all entries: 
+                Type (D) to display deposit entries: 
+                Type (P) to display payment entries: 
+                Type (R) to go to the report page 
+                Type (H) to return back to Home Page 
+                
+                """);
 
-            switch (input.toUpperCase()) {
-                case "":
-                    System.out.println("Please type a valid option or (H) to return to Home Screen: ");
-                    break;
+            String input = Console.promptForString("Please Enter one of the above options: ").toUpperCase();
+
+            switch (input) {
+
                 case "A":
                     displayAll();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else {
-                        return;
-                    }
-                case "P":
-                    displayPayment();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else {
-                        return;
-                    }
+                    break;
+
                 case "D":
                     displayDeposit();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else {
-                        return;
-                    }
+                    break;
+
+                case "P":
+                    displayPayment();
+                    break;
+
                 case "R":
                     ReportsScreen();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else {
-                        return;
-                    }
+                    break;
+
                 case "H":
-                    homeScreen();
-                    return;
+                    return; // ONLY goes back to HomeScreen
+
                 default:
-                    shouldContinue = false;
+                    System.out.println("Invalid option.");
                     break;
             }
-        }while(shouldContinue);
+        }
+
     }
 
 
-        //works very well(reverse read the values)
-        public static void displayAll ()
-        {
-            System.out.println("All the traction: ");
-            for (Transactions e : fileContent) {
+    //this does not sort when it displays
+    /**
+     * Displays all transactions from the file content.
+     */
+    public static void displayAll() {
+        System.out.println("All the traction: ");
+        for (Transactions e : fileContent) {
+            System.out.print(e);
+        }
+
+    }
+
+    /**
+     * Displays only deposit transactions (amount > 0).
+     */
+    public static void displayDeposit() {
+        System.out.println("Your Deposits");
+        for (Transactions e : fileContent) {
+            if (Double.parseDouble(String.valueOf(e.getAmount())) > 0) {
                 System.out.print(e);
             }
-
-        }
-
-
-        public static void displayPayment ()
-        {
-            System.out.println("Your Payments");
-            for (Transactions e : fileContent) {
-                if (Double.parseDouble(String.valueOf(e.getAmount())) < 0) {
-                    System.out.print(e);
-
-                }
-            }
-
-        }
-
-
-        public static void displayDeposit ()
-        {
-            System.out.println("Your Deposits");
-            for (Transactions e : fileContent) {
-
-                if (Double.parseDouble(String.valueOf(e.getAmount())) > 0) {
-                    System.out.print(e);
-
-                }
-            }
-
         }
 
     }
 
+    /**
+     * Displays only payment transactions (amount < 0).
+     */
+    public static void displayPayment() {
+        System.out.println("Your Payments");
+        for (Transactions e : fileContent) {
+            if (Double.parseDouble(String.valueOf(e.getAmount())) < 0) {
+                System.out.print(e);
+            }
+        }
+    }
+}

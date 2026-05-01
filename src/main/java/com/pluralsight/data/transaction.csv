@@ -1,4 +1,8 @@
 Date|Time|Description|Vendor|Amount
+2026-05-01|08:01:10|apple pay|ahmad|25.00
+2026-05-01|07:37:49|rewards|cashapp|44.00
+2026-05-01|07:17:19|credit card debt|wells fargo|-110.00
+2026-05-01|07:16:51|savings|wells fargo|150.00
 2026-05-01|06:17:19|groceries|Aldi|-60.00
 2026-05-01|06:16:41|paycheck|YUU|2000.00
 2026-05-01|06:16:02|credit card debt|wells fargo|-50.00
@@ -14,8 +18,8 @@ Date|Time|Description|Vendor|Amount
 2026-04-28|11:45:00|Lunch with Mom|Olive Garden|-65.30
 2026-04-28|10:30:00|Morning Coffee|Starbucks|-5.75
 2026-04-27|15:45:00|Sold Old Bike|Marketplace|120.00
-2026-03-27|15:45:00|Sold Old Bike|Super Market|120.00
 2026-03-27|15:45:00|Sold Old Bike|Bazaar|120.00
+2026-03-27|15:45:00|Sold Old Bike|Super Market|120.00
 2026-01-01|15:45:00|Sold Old Bike|store|120.00
 2025-12-25|12:00:00|Christmas Gift|Grandma|100.00
 2025-10-31|19:30:00|Halloween Decor|Target|-42.00

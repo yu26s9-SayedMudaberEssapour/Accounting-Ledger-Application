@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.jar.JarOutputStream;
 
 import static com.pluralsight.model.Transactions.fileContent;
+import static com.pluralsight.model.Transactions.listSort;
 import static com.pluralsight.ui.LedgerScreen.displayAll;
 
 
@@ -23,73 +24,53 @@ public class Reports {
      * Option 0 will be returning you back to the ledger page
      */
     public static void ReportsScreen() {
-        boolean shouldContinue = true;
-        do {
-            System.out.println();
-            System.out.println(
-                    "Welcome to the Report-Screen!! \n" +
-                            "Type (1) to display Month to date Report: \n" +
-                            "Type (2) to display Previous month: \n" +
-                            "Type (3) to display Year to date: \n" +
-                            "Type (4) to display previous year \n" +
-                            "Type (5) to Search by vendor\n" +
-                            "Type (6) to do a custom Search\n" +
-                            "Type (0) to go back to the ledger page\n");
+        listSort();
+        while (true) {
 
-            String input = Console.promptForString("Please Enter one of the above options:");
-            System.out.println();
+            System.out.println("""
+                
+                Welcome to the Report-Screen!! 
+                Type (1) Month to date
+                Type (2) Previous month
+                Type (3) Year to date
+                Type (4) Previous year
+                Type (5) Search by vendor
+                Type (0) Back to Ledger
+                
+                """);
+
+            String input = Console.promptForString("Please Enter one of the above options: ");
+
             switch (input) {
-                case "" :
-                    System.out.println("Please type a valid option or (0) to return to Ledger screen: ");
-                    break;
+
                 case "1":
                     monthToDate();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else{
-                        return;
-                    }
+                    break;
+
                 case "2":
                     prevMonth();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else{
-                        return;
-                    }
+                    break;
+
                 case "3":
                     yearToDate();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else{
-                        return;
-                    }
+                    break;
+
                 case "4":
                     prevYear();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else{
-                        return;
-                    }
+                    break;
+
                 case "5":
                     searchByVendor();
-                    if(promptToStay().equalsIgnoreCase("yes")){
-                        break;
-                    }
-                    else{
-                        return;
-                    }
+                    break;
+
                 case "0":
-                    return;
+                    return; // ONLY goes back to LedgerScreen
+
                 default:
-                    shouldContinue = false;
+                    System.out.println("Invalid option.");
                     break;
             }
         }
-        while (shouldContinue);
     }
 
 //------------------------My Helper Methods---------------------------------
@@ -230,46 +211,3 @@ public class Reports {
         }
     }
 }
-
-
-    //still needs to account for empty values, add try and catch method wherever needed
-//    public static void customSearch(){
-//            String StartDate = Console.promptForString("Please enter a start date: (yyyy-MM-DD): ");
-//            String EndDate = Console.promptForString("Please enter an end date: (yyyy-MM-DD): ");
-//            LocalDate sDate = LocalDate.parse(StartDate);
-//            LocalDate eDate = LocalDate.parse(EndDate);
-//
-//            String Description = Console.promptForString("Please enter a description ");
-//            String vendor = Console.promptForString("Vendor: ");
-//            double amount = Console.promptForDouble("Amount: ");
-//
-//            try {
-//                for (Transactions e : shortMemory()) {
-//
-//                    LocalDate dates = LocalDate.parse(e.getDate());
-//                    if (dates.isAfter(sDate) && dates.isBefore(eDate) && !StartDate.equalsIgnoreCase("")) {
-//                        lines.add(shortMemory().getFirst() + "|" + shortMemory().get(1) + "|" + shortMemory().get(2) + "|" + shortMemory().get(3) + "|" + shortMemory().get(4));
-//                    } else if (Description.equalsIgnoreCase(e.getDescription()) && !(StartDate.equalsIgnoreCase(""))) {
-//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-//
-//                    } else if (vendor.equalsIgnoreCase(e.getVendor()) && !(StartDate.equalsIgnoreCase(""))) {
-//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-//
-//                    } else if (e.getAmount() == amount) {
-//                        System.out.println(e.getDate() + "|" + e.getTime() + "|" + e.getDescription() + "|" + e.getVendor() + "|" + e.getAmount());
-//                    }
-//                }
-//
-//            }
-//            catch (Exception e){
-//                e.getMessage();
-//            }
-//
-//
-//
-//
-//
-//
-//}}
-
-
