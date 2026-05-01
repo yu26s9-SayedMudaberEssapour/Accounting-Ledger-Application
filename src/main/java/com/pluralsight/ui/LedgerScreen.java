@@ -3,9 +3,7 @@ import com.pluralsight.model.Transactions;
 
 import static com.pluralsight.model.Transactions.fileContent;
 import static com.pluralsight.model.Transactions.listSort;
-import static com.pluralsight.ui.HomeScreen.homeScreen;
 import static com.pluralsight.ui.Reports.ReportsScreen;
-import static com.pluralsight.ui.Reports.promptToStay;
 
 /**
  * This class represents the Ledger Screen of the application.
@@ -18,7 +16,7 @@ public class LedgerScreen {
      * Allows navigation to different transaction views and reports.
      */
     public static void LedgerScreens() {
-        listSort();
+        listSort(); //sorts on demand
         while (true) {
 
             System.out.println("""

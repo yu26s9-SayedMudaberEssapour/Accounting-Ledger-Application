@@ -28,16 +28,16 @@ public class Reports {
         while (true) {
 
             System.out.println("""
-                
-                Welcome to the Report-Screen!! 
-                Type (1) Month to date
-                Type (2) Previous month
-                Type (3) Year to date
-                Type (4) Previous year
-                Type (5) Search by vendor
-                Type (0) Back to Ledger
-                
-                """);
+                    
+                    Welcome to the Report-Screen!! 
+                    Type (1) Month to date
+                    Type (2) Previous month
+                    Type (3) Year to date
+                    Type (4) Previous year
+                    Type (5) Search by vendor
+                    Type (0) Back to Ledger
+                    
+                    """);
 
             String input = Console.promptForString("Please Enter one of the above options: ");
 
@@ -74,8 +74,10 @@ public class Reports {
     }
 
 //------------------------My Helper Methods---------------------------------
+
     /**
      * monthFormatter is a helper Method that formats my current months into yyyy-MM
+     *
      * @return a formatted month so that users could access them and use them.
      */
     public static String monthFormatter() {
@@ -88,9 +90,10 @@ public class Reports {
 
     /**
      * This helper Method prompts the user for an option to stay on the same screen or to leave.
+     *
      * @return the input of the user.
      */
-    public static String promptToStay(){
+    public static String promptToStay() {
         return Console.promptForString(
                 "Type (yes) to stay on this Screen, Type (no) to go to ledger Screen: ");
 
@@ -98,6 +101,7 @@ public class Reports {
 
     /**
      * This helper method is similar to the monthFormater, but it formats the year
+     *
      * @return an int of formatted year that looks like such "yyyy"
      */
     public static int yearFormater() {
@@ -108,6 +112,7 @@ public class Reports {
     }
 
     //------------------------Report Screen Methods---------------------------------
+
     /**
      * This method calls the monthFormatter and uses the formatted month to then compare to all the other months in the CSV file.
      * Once the comparison is done, if it is a similar month then it gets printed out to the user.
@@ -116,7 +121,7 @@ public class Reports {
 
         String yearMonth = monthFormatter();
         System.out.println("Your Month to Date report: ");
-        for(Transactions e : fileContent){
+        for (Transactions e : fileContent) {
             String[] splitDate = e.getDate().split("-");
             String year = splitDate[0];
             String month = splitDate[1];
@@ -142,7 +147,7 @@ public class Reports {
         int monthNow = Integer.parseInt(splYearmonth[1]);
         System.out.println("Previous Month report: ");
 
-        for(Transactions e : fileContent){
+        for (Transactions e : fileContent) {
             String[] splitDate = String.valueOf(e.getDate()).split("-");
             String yearInFile = splitDate[0];
             int monthInFile = Integer.parseInt(splitDate[1]);
@@ -150,9 +155,11 @@ public class Reports {
             int prevMonth = monthNow - 2;
 
             if ((yearInFile.equalsIgnoreCase(yearNow)) && ((monthInFile > prevMonth) && (monthInFile < monthNow))) {
-                System.out.print(e);}
+                System.out.print(e);
+            }
         }
-        System.out.println();}
+        System.out.println();
+    }
 
     /**
      * This method takes the return of the yearFormater and looks through fileContent to find all the transactions that
@@ -162,13 +169,15 @@ public class Reports {
 
         int yearNow = yearFormater();
         System.out.println("Year to Date report: ");
-        for(Transactions e : fileContent){
+        for (Transactions e : fileContent) {
             String[] splitDate = String.valueOf(e.getDate()).split("-");
             int yearsInFile = Integer.parseInt(splitDate[0]);
-            if (yearsInFile == yearNow){
-                System.out.print(e);}
+            if (yearsInFile == yearNow) {
+                System.out.print(e);
+            }
         }
-        System.out.println();}
+        System.out.println();
+    }
 
     /**
      * This method calls yearFormater and gets the current year.
@@ -177,14 +186,15 @@ public class Reports {
     public static void prevYear() {
         int yearNow = yearFormater();
         System.out.println("Previous year report: ");
-        for(Transactions e : fileContent){
+        for (Transactions e : fileContent) {
 
             String[] splitDate = String.valueOf(e.getDate()).split("-");
             int year = Integer.parseInt(splitDate[0]);
             int prevYear = yearNow - 2;
             if ((year > prevYear) && (year < yearNow)) {
                 System.out.print(e);
-            }}
+            }
+        }
         System.out.println();
     }
 
@@ -199,15 +209,19 @@ public class Reports {
         int vendorCounter = 0;
         System.out.println("Your Vendor Search Result: ");
 
-        for(Transactions e : fileContent){
+        for (Transactions e : fileContent) {
             String vendor = e.getVendor();
-            if (vendor.equalsIgnoreCase(nameOfVendor)){
+            if (vendor.equalsIgnoreCase(nameOfVendor)) {
                 System.out.print(e);
-                vendorCounter ++;}}
+                vendorCounter++;
+            }
+        }
         System.out.println();
 
-        if(vendorCounter == 0){
+        if (vendorCounter == 0) {
             System.out.println("Sorry your item does not exist or you have not entered anything: ");
         }
     }
+
+
 }
