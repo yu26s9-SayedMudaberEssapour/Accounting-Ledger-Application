@@ -11,6 +11,7 @@ public class MainApp {
         //it does not add to the top when d or p
         loader();
         homeScreen();
+        listSort();
         loadCSVFile();
 
       //whevenever a new one is being added it should be added to the top

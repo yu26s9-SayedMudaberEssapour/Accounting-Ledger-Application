@@ -115,6 +115,13 @@ public class Transactions {
 
     }
 
+    public static void listSort()
+    {
+        fileContent.sort(Comparator.comparing(Transactions::getLocalDT));
+        Collections.reverse(fileContent);
+    }
+
+
     public static void loadCSVFile(){
 
         try{

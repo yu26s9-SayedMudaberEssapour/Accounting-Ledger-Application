@@ -14,6 +14,14 @@ import static com.pluralsight.ui.LedgerScreen.displayAll;
 
 public class Reports {
 
+
+    /**
+     * Report Screen Method
+     * The method is responsible for prompting the user for 7 different options.
+     * Options 1 - 4 are displaying by different dates.
+     * Option 5 - 6 are asking the user's input on what to display
+     * Option 0 will be returning you back to the ledger page
+     */
     public static void ReportsScreen() {
         boolean shouldContinue = true;
         do {
@@ -51,7 +59,7 @@ public class Reports {
                         return;
                     }
                 case "3":
-                    yearTodate();
+                    yearToDate();
                     if(promptToStay().equalsIgnoreCase("yes")){
                         break;
                     }
@@ -84,25 +92,44 @@ public class Reports {
         while (shouldContinue);
     }
 
+//------------------------My Helper Methods---------------------------------
+    /**
+     * monthFormatter is a helper Method that formats my current months into yyyy-MM
+     * @return a formatted month so that users could access them and use them.
+     */
     public static String monthFormatter() {
         //This will give the current date of my local area
         LocalDate date = LocalDate.now();
         DateTimeFormatter date1;
         date1 = DateTimeFormatter.ofPattern("yyyy-MM");
-        String formattedTime = date.format(date1);
-
-        return formattedTime;
+        return date.format(date1);
     }
 
+    /**
+     * This helper Method prompts the user for an option to stay on the same screen or to leave.
+     * @return the input of the user.
+     */
     public static String promptToStay(){
         return Console.promptForString(
                 "Type (yes) to stay on this Screen, Type (no) to go to ledger Screen: ");
 
     }
 
-
     /**
-     * it works to how I intend it to work.
+     * This helper method is similar to the monthFormater, but it formats the year
+     * @return an int of formatted year that looks like such "yyyy"
+     */
+    public static int yearFormater() {
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter date1;
+        date1 = DateTimeFormatter.ofPattern("yyyy");
+        return Integer.parseInt(date.format(date1));
+    }
+
+    //------------------------Report Screen Methods---------------------------------
+    /**
+     * This method calls the monthFormatter and uses the formatted month to then compare to all the other months in the CSV file.
+     * Once the comparison is done, if it is a similar month then it gets printed out to the user.
      */
     public static void monthToDate() {
 
@@ -114,118 +141,95 @@ public class Reports {
             String month = splitDate[1];
             String yearAndMonth = year + "-" + month;
 
-            //fix this later
             if (yearAndMonth.equalsIgnoreCase(yearMonth)) {
                 System.out.print(e);
             }
         }
         System.out.println();
-
     }
 
 
-    //not printing anything
+    /**
+     * This method will be printing out the all the transactions from the previous month.
+     * It first takes the return of monthFormatter() and then splits it into year month
+     * It then stores the current year and current month in variables
+     * It searches the fileContent to see if there are transactions for the prior month and prints them.
+     */
     public static void prevMonth() {
         String[] splYearmonth = monthFormatter().split("-");
-        //month and year right now
         String yearNow = splYearmonth[0];
         int monthNow = Integer.parseInt(splYearmonth[1]);
         System.out.println("Previous Month report: ");
-        for(Transactions e : fileContent){
 
+        for(Transactions e : fileContent){
             String[] splitDate = String.valueOf(e.getDate()).split("-");
             String yearInFile = splitDate[0];
             int monthInFile = Integer.parseInt(splitDate[1]);
 
-            int prevmonth = monthNow - 2;
+            int prevMonth = monthNow - 2;
 
-            if ((yearInFile.equalsIgnoreCase(yearNow)) && ((monthInFile > prevmonth) && (monthInFile < monthNow))) {
-                System.out.print(e);
-            }
-
+            if ((yearInFile.equalsIgnoreCase(yearNow)) && ((monthInFile > prevMonth) && (monthInFile < monthNow))) {
+                System.out.print(e);}
         }
-        System.out.println();
+        System.out.println();}
 
-    }
+    /**
+     * This method takes the return of the yearFormater and looks through fileContent to find all the transactions that
+     * were year to date, and then it simply prints it to console.
+     */
+    public static void yearToDate() {
 
-
-    //___________________________year_____________________________________
-
-    public static String yearFormater() {
-        //This will give the current date of my local area
-        LocalDate date = LocalDate.now();
-
-        DateTimeFormatter date1;
-        date1 = DateTimeFormatter.ofPattern("yyyy");
-        String formattedTime = date.format(date1);
-        return formattedTime;
-    }
-
-
-
-
-    //this method is also working
-    public static void yearTodate() {
-
-        String year = yearFormater();
+        int yearNow = yearFormater();
         System.out.println("Year to Date report: ");
         for(Transactions e : fileContent){
             String[] splitDate = String.valueOf(e.getDate()).split("-");
-            String yearsInFile = splitDate[0];
-            if (yearsInFile.equalsIgnoreCase(year)){
-                System.out.print(e);
+            int yearsInFile = Integer.parseInt(splitDate[0]);
+            if (yearsInFile == yearNow){
+                System.out.print(e);}
         }
-        }
-        System.out.println();
+        System.out.println();}
 
-    }
-
-    //alhamdullilah it is working
-    //refactored just need to fix the reversing problem
+    /**
+     * This method calls yearFormater and gets the current year.
+     * It then uses the current year to compare it to all the transactions and print the previous year's transactions.
+     */
     public static void prevYear() {
-
-        String[] splYearmonth = yearFormater().split("-");
-        //this takes the year right now
-        int yearNow = Integer.parseInt(splYearmonth[0]);
+        int yearNow = yearFormater();
         System.out.println("Previous year report: ");
         for(Transactions e : fileContent){
-            String[] splitDate = String.valueOf(e.getDate()).split("-");
 
+            String[] splitDate = String.valueOf(e.getDate()).split("-");
             int year = Integer.parseInt(splitDate[0]);
             int prevYear = yearNow - 2;
             if ((year > prevYear) && (year < yearNow)) {
                 System.out.print(e);
-            }
-
-        }
+            }}
         System.out.println();
     }
 
 
-    //if something does not exist it needs to repromt the user
+    /**
+     * This method takes a vendor name from the user and prints the transaction if it exists.
+     */
     public static void searchByVendor() {
         String nameOfVendor = Console.promptForString("Please enter the name of the vendor: ");
         System.out.println();
 
-        StringBuilder exist = new StringBuilder();
+        int vendorCounter = 0;
         System.out.println("Your Vendor Search Result: ");
+
         for(Transactions e : fileContent){
             String vendor = e.getVendor();
             if (vendor.equalsIgnoreCase(nameOfVendor)){
                 System.out.print(e);
-                exist.append("exist");
-
-            }
-
-        }
+                vendorCounter ++;}}
         System.out.println();
-        if(exist.isEmpty()){
+
+        if(vendorCounter == 0){
             System.out.println("Sorry your item does not exist or you have not entered anything: ");
         }
-
-        }
-
     }
+}
 
 
     //still needs to account for empty values, add try and catch method wherever needed
