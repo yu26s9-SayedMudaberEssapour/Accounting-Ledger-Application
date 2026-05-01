@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.jar.JarOutputStream;
 
-import static com.pluralsight.model.Transactions.shortMemory;
+import static com.pluralsight.model.Transactions.fileContent;
+import static com.pluralsight.ui.LedgerScreen.displayAll;
+
 
 public class Reports {
 
@@ -24,29 +26,54 @@ public class Reports {
                             "Type (4) to display previous year \n" +
                             "Type (5) to Search by vendor\n" +
                             "Type (6) to do a custom Search\n" +
-                            "Type (0) to go back to the ledger page");
-            System.out.println();
-            String input = Console.promptForString("Please Enter one of the above options: ");
+                            "Type (0) to go back to the ledger page\n");
 
+            String input = Console.promptForString("Please Enter one of the above options:");
+            System.out.println();
             switch (input) {
+                case "" :
+                    System.out.println("Please type a valid option or (0) to return to Ledger screen: ");
+                    break;
                 case "1":
                     monthToDate();
-                    break;
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else{
+                        return;
+                    }
                 case "2":
                     prevMonth();
-                    break;
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else{
+                        return;
+                    }
                 case "3":
                     yearTodate();
-                    break;
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else{
+                        return;
+                    }
                 case "4":
                     prevYear();
-                    break;
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else{
+                        return;
+                    }
                 case "5":
                     searchByVendor();
-                    break;
-                case "6":
-                    //customSearch();
-                    break;
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else{
+                        return;
+                    }
                 case "0":
                     return;
                 default:
@@ -54,7 +81,6 @@ public class Reports {
                     break;
             }
         }
-
         while (shouldContinue);
     }
 
@@ -68,6 +94,12 @@ public class Reports {
         return formattedTime;
     }
 
+    public static String promptToStay(){
+        return Console.promptForString(
+                "Type (yes) to stay on this Screen, Type (no) to go to ledger Screen: ");
+
+    }
+
 
     /**
      * it works to how I intend it to work.
@@ -75,8 +107,8 @@ public class Reports {
     public static void monthToDate() {
 
         String yearMonth = monthFormatter();
-
-        for(Transactions e : shortMemory()){
+        System.out.println("Your Month to Date report: ");
+        for(Transactions e : fileContent){
             String[] splitDate = e.getDate().split("-");
             String year = splitDate[0];
             String month = splitDate[1];
@@ -84,29 +116,35 @@ public class Reports {
 
             //fix this later
             if (yearAndMonth.equalsIgnoreCase(yearMonth)) {
-                System.out.println(e);
+                System.out.print(e);
             }
         }
+        System.out.println();
 
     }
 
+
+    //not printing anything
     public static void prevMonth() {
         String[] splYearmonth = monthFormatter().split("-");
         //month and year right now
         String yearNow = splYearmonth[0];
         int monthNow = Integer.parseInt(splYearmonth[1]);
+        System.out.println("Previous Month report: ");
+        for(Transactions e : fileContent){
 
-        for(Transactions e : shortMemory()){
             String[] splitDate = String.valueOf(e.getDate()).split("-");
-            String year = splitDate[0];
-            int month = Integer.parseInt(splitDate[1]);
+            String yearInFile = splitDate[0];
+            int monthInFile = Integer.parseInt(splitDate[1]);
+
             int prevmonth = monthNow - 2;
 
-            if ((year.equalsIgnoreCase(yearNow)) && ((month > prevmonth) && (month < monthNow))) {
-                System.out.println(e);
+            if ((yearInFile.equalsIgnoreCase(yearNow)) && ((monthInFile > prevmonth) && (monthInFile < monthNow))) {
+                System.out.print(e);
             }
 
         }
+        System.out.println();
 
     }
 
@@ -130,14 +168,15 @@ public class Reports {
     public static void yearTodate() {
 
         String year = yearFormater();
-
-        for(Transactions e : shortMemory()){
+        System.out.println("Year to Date report: ");
+        for(Transactions e : fileContent){
             String[] splitDate = String.valueOf(e.getDate()).split("-");
             String yearsInFile = splitDate[0];
             if (yearsInFile.equalsIgnoreCase(year)){
-                System.out.println(e);
+                System.out.print(e);
         }
         }
+        System.out.println();
 
     }
 
@@ -148,30 +187,43 @@ public class Reports {
         String[] splYearmonth = yearFormater().split("-");
         //this takes the year right now
         int yearNow = Integer.parseInt(splYearmonth[0]);
-
-        for(Transactions e : shortMemory()){
+        System.out.println("Previous year report: ");
+        for(Transactions e : fileContent){
             String[] splitDate = String.valueOf(e.getDate()).split("-");
 
             int year = Integer.parseInt(splitDate[0]);
             int prevYear = yearNow - 2;
             if ((year > prevYear) && (year < yearNow)) {
-                System.out.println(e);
+                System.out.print(e);
             }
 
         }
+        System.out.println();
     }
 
 
-    //this method is also working well
+    //if something does not exist it needs to repromt the user
     public static void searchByVendor() {
         String nameOfVendor = Console.promptForString("Please enter the name of the vendor: ");
+        System.out.println();
 
-        for(Transactions e : shortMemory()){
-            if (String.valueOf(e.getVendor()).equalsIgnoreCase(nameOfVendor)){
-                System.out.println(e);
+        StringBuilder exist = new StringBuilder();
+        System.out.println("Your Vendor Search Result: ");
+        for(Transactions e : fileContent){
+            String vendor = e.getVendor();
+            if (vendor.equalsIgnoreCase(nameOfVendor)){
+                System.out.print(e);
+                exist.append("exist");
+
             }
+
+        }
+        System.out.println();
+        if(exist.isEmpty()){
+            System.out.println("Sorry your item does not exist or you have not entered anything: ");
         }
 
+        }
 
     }
 
@@ -217,4 +269,3 @@ public class Reports {
 //}}
 
 
-}

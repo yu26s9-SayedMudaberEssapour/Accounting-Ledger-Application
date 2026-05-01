@@ -1,9 +1,7 @@
 package com.pluralsight.ui;
-import java.io.FileWriter;
-
-import static com.pluralsight.model.Transactions.writeShortMemory;
-import static com.pluralsight.ui.LedgerScreen.LedgerScreen;
-
+import com.pluralsight.model.Transactions;
+import static com.pluralsight.model.Transactions.*;
+import static com.pluralsight.ui.LedgerScreen.LedgerScreens;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -17,40 +15,42 @@ public class HomeScreen{
 
     public static void homeScreen(){
 
-            String input;
-            do {
-                System.out.println();
-                System.out.println(
-                        "Welcome to Accounting-Ledger-Application!! \n" +
-                                "Type (D) to Add Deposit\n" +
-                                "Type (P) to Make Payment\n" +
-                                "Type (L) to go to Ledger Screen\n" +
-                                "Type (X) to exit\n");
+        String input;
+        do {
+            System.out.println();
+            System.out.println(
+                    "Welcome to Accounting-Ledger-Application!! \n" +
+                            "Type (D) to Add Deposit\n" +
+                            "Type (P) to Make Payment\n" +
+                            "Type (L) to go to Ledger Screen\n" +
+                            "Type (X) to exit\n");
 
 
-                input = Console.promptForString("Please Enter one of the above options: ");
+            input = Console.promptForString("Please Enter one of the above options: ");
 
-                switch(input.toUpperCase()){
-                    case "D" :
-                        MakeDeposit();
-                        break;
-                    case "P" :
-                        MakePayment();
-                        break;
-                        //break;
-                    case "L" :
-                        LedgerScreen();
-                        break;
-                    case "X" :
-                        System.out.println("You have exited the application");
-                        break;
-                    default :
-                        return;
-                }
+            switch(input.toUpperCase()){
+                case "" :
+                    System.out.println("Please type a valid option or (X) to exit: ");
+                    break;
+                case "D" :
+                    MakeDeposit();
+                    break;
+                case "P" :
+                    MakePayment();
+                    break;
+                case "L" :
+                    LedgerScreens();
+                    break;
+                case "X" :
+                    System.out.println("You have exited the application");
+                    break;
+
+                default :
+                    return;
             }
+        }
 
-            while(!input.equalsIgnoreCase("x"));
-
+        while(!input.equalsIgnoreCase("x"));
 
 
     }
@@ -60,8 +60,7 @@ public class HomeScreen{
     //take care of it so that it takes care of times when an invalid option is entered.
     public static void MakeDeposit()
     {
-        //get users deposit information and save it to .csv
-        //things to change here (the date) (the time)
+
         try{
             String description = Console.promptForString("Please enter the Description of your deposit: ");
             String vendor = Console.promptForString("Please enter the Vendor name: ");
@@ -69,21 +68,10 @@ public class HomeScreen{
             LocalDate date = LocalDate.now();
             String date1 = String.valueOf(date);
 
-            FileWriter writer = new FileWriter(transactionFile, true);
-
-            StringBuilder userInfo = new StringBuilder();
-            String amountInString = String.valueOf(Math.round(amount * 100.0) / 100.0);
-            userInfo.append(date1 + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
-
-            writer.write(String.valueOf(userInfo));
-            writeShortMemory(date1, timeReturn(), description, vendor, amount);
-
-            writer.close();
+            fileContent.add(new Transactions(date1, timeReturn(), description, vendor, (amount)));
 
         }catch (Exception e){
             System.out.println("Sorry invalid value, please enter only a number: ");
-            e.getMessage();
-            homeScreen();
 
         }
 
@@ -94,28 +82,17 @@ public class HomeScreen{
     public static void MakePayment(){
 
         try{
-            String description = Console.promptForString("Please enter the Description of your payment: ");
+            String description = Console.promptForString("Please enter the Description of your deposit: ");
             String vendor = Console.promptForString("Please enter the Vendor name: ");
             double amount = Console.promptForDouble("Please enter the amount here: ");
             LocalDate date = LocalDate.now();
             String date1 = String.valueOf(date);
 
-            FileWriter writer = new FileWriter(transactionFile, true);
+            fileContent.add(new Transactions(date1, timeReturn(), description, vendor, (amount * -1)));
 
-            StringBuilder userInfo = new StringBuilder();
-            String amountInString = String.valueOf((Math.round(amount * 100.0) / 100.0) * -1);
-            userInfo.append(date + "|" + timeReturn() + "|" + description + "|" + vendor + "|" + amountInString + "\n");
-            writer.write(String.valueOf(userInfo));
-            //writing to the short memory too
-            writeShortMemory(date1, timeReturn(), description, vendor, amount);
+        }catch (Exception e){
+            System.out.println("Sorry invalid value, please enter only a number: ");
 
-            writer.close();
-
-        }
-        catch (Exception e){
-            System.out.println("Sorry invalid entry, Please only enter a number");
-            e.getMessage();
-           // homeScreen();
         }
 
 

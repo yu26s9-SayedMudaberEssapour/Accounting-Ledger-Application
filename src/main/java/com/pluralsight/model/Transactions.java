@@ -1,19 +1,13 @@
 package com.pluralsight.model;
 
-import com.pluralsight.ui.Console;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 public class Transactions {
 
@@ -81,15 +75,10 @@ public class Transactions {
         return this.localDateTime;
     }
 
-
-
     //make an arraylist that keeps track of all of the items in transactions.csv
     public static ArrayList<Transactions> fileContent = new ArrayList<>();
 
-
-    //always at runtime your array should be sorted
-
-    public static ArrayList<Transactions> shortMemory()
+    public static void loader()
     {
         try {
 
@@ -123,45 +112,34 @@ public class Transactions {
 
         Collections.reverse(fileContent);
 
-        return fileContent;
 
     }
 
+    public static void loadCSVFile(){
 
+        try{
+            FileWriter writer = new FileWriter(transactionFile);
+            writer.write("Date|Time|Description|Vendor|Amount\n");
 
-    public static void sortfile(){
+            for(Transactions T : fileContent){
+                writer.write(T.toString());
 
-        for(Transactions t : shortMemory()){
-            try{
-                FileWriter fr = new FileWriter(transactionFile);
-
-                fr.write()
-                fr.write(t.toString());
-                fr.close();
             }
-            catch (IOException e){
-                e.getMessage();
-            }
+            writer.close();
+        }
+        catch (IOException e){
+            e.getMessage();
         }
 
     }
 
 
-
-
-
     //____________________________________writing_____________________________________
-
-
-    public static void writeShortMemory(String date, String time, String description, String vendor, double amount)
-    {
-        fileContent.add(new Transactions(date, time, description, vendor, amount));
-    }
 
 
 
     @Override
     public String toString() {
-        return String.format("%s|%s|%s|%s|%.2f", date, time, description, vendor, amount);
+        return String.format("%s|%s|%s|%s|%.2f\n", date, time, description, vendor, amount);
     }
 }

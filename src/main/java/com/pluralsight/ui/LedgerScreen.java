@@ -1,7 +1,10 @@
 package com.pluralsight.ui;
 import com.pluralsight.model.Transactions;
-import static com.pluralsight.model.Transactions.shortMemory;
+
+import static com.pluralsight.model.Transactions.fileContent;
+import static com.pluralsight.ui.HomeScreen.homeScreen;
 import static com.pluralsight.ui.Reports.ReportsScreen;
+import static com.pluralsight.ui.Reports.promptToStay;
 
 
 public class LedgerScreen {
@@ -9,8 +12,7 @@ public class LedgerScreen {
     static Console console = new Console();
 
 
-    public static void LedgerScreen()
-    {
+    public static void LedgerScreens() {
         boolean shouldContinue = true;
         do {
             System.out.println();
@@ -22,67 +24,91 @@ public class LedgerScreen {
                             "Type (R) to go to the report page \n" +
                             "Type (H) to return back to Home Page \n");
 
-            String input = console.promptForString("Please Enter one of the above options: ");
+            String input = Console.promptForString("Please Enter one of the above options: ");
 
-            switch(input.toUpperCase()){
-                case "A" :
+            switch (input.toUpperCase()) {
+                case "":
+                    System.out.println("Please type a valid option or (H) to return to Home Screen: ");
+                    break;
+                case "A":
                     displayAll();
-                    break;
-                case "P" :
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else {
+                        return;
+                    }
+                case "P":
                     displayPayment();
-                    break;
-                case "D" :
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else {
+                        return;
+                    }
+                case "D":
                     displayDeposit();
-                    break;
-                case "R" :
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else {
+                        return;
+                    }
+                case "R":
                     ReportsScreen();
-                    break;
-                case "H" :
+                    if(promptToStay().equalsIgnoreCase("yes")){
+                        break;
+                    }
+                    else {
+                        return;
+                    }
+                case "H":
+                    homeScreen();
                     return;
-                default :
+                default:
                     shouldContinue = false;
                     break;
             }
+        }while(shouldContinue);
+    }
+
+
+        //works very well(reverse read the values)
+        public static void displayAll ()
+        {
+            System.out.println("All the traction: ");
+            for (Transactions e : fileContent) {
+                System.out.print(e);
+            }
+
         }
 
-        while(shouldContinue);
-    }
+
+        public static void displayPayment ()
+        {
+            System.out.println("Your Payments");
+            for (Transactions e : fileContent) {
+                if (Double.parseDouble(String.valueOf(e.getAmount())) < 0) {
+                    System.out.print(e);
+
+                }
+            }
+
+        }
 
 
+        public static void displayDeposit ()
+        {
+            System.out.println("Your Deposits");
+            for (Transactions e : fileContent) {
 
+                if (Double.parseDouble(String.valueOf(e.getAmount())) > 0) {
+                    System.out.print(e);
 
-    //works very well(reverse read the values)
-    public static void displayAll()
-    {
-        for(Transactions e: shortMemory()){
-            System.out.println(e);
+                }
+            }
+
         }
 
     }
-
-
-
-    public static void displayPayment()
-    {
-        for(Transactions e: shortMemory()){
-//
-            if(Double.parseDouble(String.valueOf(e.getAmount())) < 0){
-                System.out.println(e);
-
-        }}
-
-    }
-
-
-
-    public static void displayDeposit()
-    {
-        for(Transactions e: shortMemory()){
-//
-            if(Double.parseDouble(String.valueOf(e.getAmount())) > 0){
-                System.out.println(e);
-
-            }}
-
-        }}
 
